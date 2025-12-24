@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal World | Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #0b1c2d; --accent: #27ae60; --text: #333; --bg: #f0f2f5; }
+    body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    
+    nav { background: var(--primary); padding: 1rem 5%; display: flex; justify-content: flex-start; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+    nav a { color: #fff; margin-right: 25px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+    nav a:hover { color: var(--accent); }
+
+    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+    h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 30px; border-left: 5px solid var(--accent); padding-left: 15px; }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      display: flex;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card img { width: 300px; height: 200px; object-fit: cover; }
+    .card-content { padding: 25px; }
+    .card-content h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 1.5rem; }
+    .card-content p { margin: 0; color: #666; }
+
+    @media (max-width: 768px) {
+      .card { flex-direction: column; }
+      .card img { width: 100%; height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/">Home</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/faq">FAQ</a>
+</nav>
+
+<div class="container">
+  <h1>Welcome to Animal World</h1>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1552410260-0fd9b577afa6" alt="Lion" />
+    <div class="card-content">
+      <h3>Lion</h3>
+      <p>The lion is known as the king of the jungle. It lives in groups called prides. These majestic creatures are symbols of strength and courage across many cultures.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Elephant" />
+    <div class="card-content">
+      <h3>Elephant</h3>
+      <p>Elephants are the largest land animals and are very intelligent. They are known for their long trunks, large ears, and incredible memory.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1549480017-d76466a4b7e8?q=80&w=1156&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tiger" />
+    <div class="card-content">
+      <h3>Tiger</h3>
+      <p>The tiger (Panthera tigris) is a large cat and a member of the genus Panthera native to Asia. It has a powerful, muscular body with a large head and paws.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1557218825-334e575bcc38?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Gorilla" />
+    <div class="card-content">
+      <h3>Gorilla</h3>
+      <p>Gorillas are large, primarily herbivorous,[1] great apes that live in the tropical forests of equatorial Africa. The genus Gorilla is divided into two species: the eastern gorilla and the western gorilla, and either four or five subspecies.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1597953601374-1ff2d5640c85?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Panda" />
+    <div class="card-content">
+      <h3>Panda</h3>
+      <p>Pandas, or giant pandas, are iconic black-and-white bears from China's mountain forests, famous for their bamboo diet, which they eat for up to 12 hours daily using a special wrist bone that acts as a thumb.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1516822487734-69ff4b9bf49d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cheetah" />
+    <div class="card-content">
+      <h3>Cheetah</h3>
+      <p>The cheetah (Acinonyx jubatus) is the world's fastest land animal, built for speed with a slender body, long legs, flexible spine, and non-retractable claws for traction, reaching 60-70 mph (97-112 km/h) in short bursts.</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
