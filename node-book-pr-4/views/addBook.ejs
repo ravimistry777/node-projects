@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Book | BookLibrary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --primary-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+      --dark-bg: #0f172a;
+      --darker-bg: #020617;
+      --card-bg: rgba(30, 41, 59, 0.8);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --accent-color: #818cf8;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Outfit', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(at 40% 20%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+        radial-gradient(at 80% 50%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #6366f1, #a855f7);
+      border-radius: 4px;
+    }
+
+    .navbar {
+      background: rgba(2, 6, 23, 0.85) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem 0;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-gradient);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .brand-logo i {
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      padding: 0.75rem 1.5rem !important;
+      border-radius: 12px;
+      margin: 0 0.25rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .nav-link:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.05);
+      color: white !important;
+    }
+
+    .nav-link.active {
+      background: var(--primary-gradient);
+      color: white !important;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .hero-section {
+      padding: 6rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .floating-element {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    .floating-1 {
+      background: #6366f1;
+      top: 10%;
+      left: 10%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .floating-2 {
+      background: #a855f7;
+      bottom: 10%;
+      right: 10%;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+      }
+    }
+
+    .hero-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      animation: slideUp 1s ease-out;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .main-content {
+      padding: 2rem 0 6rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(129, 140, 248, 0.3);
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .card-header {
+      padding: 2.5rem;
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(15, 23, 42, 0.3);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg,
+          rgba(99, 102, 241, 0.2) 0%,
+          rgba(168, 85, 247, 0.2) 100%);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-size: 1.75rem;
+      color: var(--accent-color);
+    }
+
+    .header-text h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-text p {
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+
+    .card-body {
+      padding: 2.5rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-label i {
+      color: var(--accent-color);
+      font-size: 1.1rem;
+    }
+
+    .form-control,
+    .form-select {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+      color: var(--text-primary);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    .input-group {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .input-group-text {
+      background: linear-gradient(135deg,
+          rgba(99, 102, 241, 0.2) 0%,
+          rgba(168, 85, 247, 0.2) 100%);
+      border: 1px solid var(--glass-border);
+      color: var(--accent-color);
+      padding: 1rem 1.25rem;
+      font-weight: 500;
+    }
+
+    .input-group .form-control {
+      border-left: none;
+    }
+
+    .input-group .form-control:focus {
+      border-left: 1px solid var(--accent-color);
+    }
+
+    .form-text {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .preview-container {
+      background: rgba(15, 23, 42, 0.4);
+      border: 2px dashed var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .preview-container:hover {
+      border-color: var(--accent-color);
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .preview-image {
+      max-width: 200px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .preview-placeholder {
+      width: 200px;
+      height: 300px;
+      background: rgba(99, 102, 241, 0.05);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      border: 2px dashed var(--glass-border);
+    }
+
+    .preview-placeholder i {
+      font-size: 3rem;
+      color: var(--accent-color);
+      opacity: 0.5;
+    }
+
+    .form-actions {
+      padding: 2.5rem;
+      border-top: 1px solid var(--glass-border);
+      background: rgba(15, 23, 42, 0.3);
+    }
+
+    .btn-submit {
+      background: var(--primary-gradient);
+      border: none;
+      color: white;
+      padding: 1.25rem 3rem;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent);
+      transition: left 0.6s;
+    }
+
+    .btn-submit:hover::before {
+      left: 100%;
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-gradient-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-cancel {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .btn-cancel:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border-color: var(--accent-color);
+      transform: translateY(-2px);
+    }
+
+    .generated-id {
+      background: linear-gradient(135deg,
+          rgba(34, 197, 94, 0.1) 0%,
+          rgba(21, 128, 61, 0.1) 100%);
+      color: #10b981;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    .footer {
+      background: var(--darker-bg);
+      padding: 4rem 0 2rem;
+      border-top: 1px solid var(--glass-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+          transparent 0%,
+          var(--accent-color) 50%,
+          transparent 100%);
+    }
+
+    .footer-content {
+      text-align: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-logo-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--primary-gradient);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-logo-icon i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .footer-logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .footer-description {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .copyright {
+      padding-top: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transform: translateX(150%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 9999;
+      max-width: 350px;
+    }
+
+    .toast-notification.show {
+      transform: translateX(0);
+    }
+
+    .toast-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .toast-success .toast-icon {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(21, 128, 61, 0.2));
+      color: #10b981;
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-message {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .toast-close:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    /* Loading Animation */
+    .loading-shimmer {
+      background: linear-gradient(90deg,
+          rgba(255, 255, 255, 0.03) 25%,
+          rgba(255, 255, 255, 0.08) 50%,
+          rgba(255, 255, 255, 0.03) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-section {
+        padding: 5rem 0 3rem;
+      }
+
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .card-header,
+      .card-body,
+      .form-actions {
+        padding: 1.5rem;
+      }
+
+      .glass-card {
+        margin: 0 -1rem;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+      }
+
+      .glass-card:hover {
+        transform: none;
+      }
+    }
+
+    /* Animation for form elements */
+    .form-group {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Add delay for each form group */
+    .form-group:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .form-group:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .form-group:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .form-group:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .form-group:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    /* Progress Steps */
+    .progress-steps {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      position: relative;
+      padding: 0 1rem;
+    }
+
+    .progress-steps::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--glass-border);
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .progress-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      flex: 1;
+    }
+
+    .step-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.75rem;
+      transition: all 0.3s ease;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .step-icon.active {
+      background: var(--primary-gradient);
+      border-color: var(--accent-color);
+      color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .step-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .step-label.active {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <div class="brand-logo">
+          <i class="bi bi-book-half"></i>
+        </div>
+        <span>BookLibrary</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="bi bi-speedometer2 me-2"></i>Dashboard
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="floating-element floating-1"></div>
+    <div class="floating-element floating-2"></div>
+
+    <div class="container hero-content">
+      <h1 class="hero-title">Add New Book</h1>
+      <p class="hero-subtitle">
+        Expand your collection by adding a new masterpiece to your library
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          <div class="glass-card">
+            <!-- Progress Steps -->
+            <div class="progress-steps">
+              <div class="progress-step">
+                <div class="step-icon active">
+                  <i class="bi bi-pencil"></i>
+                </div>
+                <div class="step-label active">Details</div>
+              </div>
+              <div class="progress-step">
+                <div class="step-icon">
+                  <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="step-label">Review</div>
+              </div>
+              <div class="progress-step">
+                <div class="step-icon">
+                  <i class="bi bi-check2-all"></i>
+                </div>
+                <div class="step-label">Complete</div>
+              </div>
+            </div>
+
+            <!-- Card Header -->
+            <div class="card-header">
+              <div class="header-content">
+                <div class="header-icon">
+                  <i class="bi bi-journal-plus"></i>
+                </div>
+                <div class="header-text">
+                  <h2>Book Registration</h2>
+                  <p>Fill in the details to add a new book to your collection</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <form action="/add-book" method="post" id="addBookForm">
+              <div class="card-body">
+                <div class="row">
+                  <!-- Title -->
+                  <div class="col-md-6 mb-4 form-group">
+                    <label class="form-label" for="title">
+                      <i class="bi bi-bookmark-fill"></i>Book Title
+                    </label>
+                    <div class="input-group">
+                      <input type="text" name="title" id="title" class="form-control" placeholder="The Alchemist"
+                        required autocomplete="off">
+                    </div>
+                    <div class="form-text">
+                      <i class="bi bi-info-circle"></i>
+                      Enter the complete title of the book
+                    </div>
+                  </div>
+
+                  <!-- Author -->
+                  <div class="col-md-6 mb-4 form-group">
+                    <label class="form-label" for="author">
+                      <i class="bi bi-person-fill"></i>Author Name
+                    </label>
+                    <div class="input-group">
+                      <input type="text" name="author" id="author" class="form-control" placeholder="Paulo Coelho"
+                        required autocomplete="off">
+                    </div>
+                    <div class="form-text">
+                      <i class="bi bi-info-circle"></i>
+                      Full name of the author
+                    </div>
+                  </div>
+
+                  <!-- Category -->
+                  <div class="col-md-6 mb-4 form-group">
+                    <label class="form-label" for="category">
+                      <i class="bi bi-tag-fill"></i>Category
+                    </label>
+                    <div class="input-group">
+                      <select class="form-select" name="category" id="category" required>
+                        <option value="" selected disabled>Select category...</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Education">Education</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Science">Science</option>
+                        <option value="History">History</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Business">Business</option>
+                        <option value="Self-Help">Self-Help</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="Romance">Romance</option>
+                      </select>
+                    </div>
+                    <div class="form-text">
+                      <i class="bi bi-info-circle"></i>
+                      Select the most appropriate category
+                    </div>
+                  </div>
+
+                  <!-- Price -->
+                  <div class="col-md-6 mb-4 form-group">
+                    <label class="form-label" for="price">
+                      <i class="bi bi-currency-rupee"></i>Price (INR)
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">₹</span>
+                      <input type="number" step="0.01" name="price" id="price" class="form-control" placeholder="0.00"
+                        min="0" required autocomplete="off">
+                    </div>
+                    <div class="form-text">
+                      <i class="bi bi-info-circle"></i>
+                      Enter the price in Indian Rupees
+                    </div>
+                  </div>
+
+                  <!-- Book Image URL -->
+                  <div class="col-12 mb-4 form-group">
+                    <label class="form-label" for="bookImage">
+                      <i class="bi bi-image-fill"></i>Cover Image URL
+                    </label>
+                    <div class="input-group">
+                      <input type="url" name="bookImage" id="bookImage" class="form-control"
+                        placeholder="https://example.com/book-cover.jpg" required oninput="updateBookCover()"
+                        autocomplete="off">
+                    </div>
+                    <div class="form-text">
+                      <i class="bi bi-info-circle"></i>
+                      Enter a valid URL for the book cover image
+                    </div>
+
+                    <!-- Image Preview -->
+                    <div class="preview-container mt-3">
+                      <div class="preview-placeholder" id="imagePlaceholder">
+                        <i class="bi bi-image"></i>
+                      </div>
+                      <img src="" class="preview-image" alt="Book Cover Preview" id="liveBookCoverPreview"
+                        onerror="showImagePlaceholder()">
+                      <p class="text-secondary small mb-0 mt-2" id="previewText">
+                        Preview will appear here when you enter a valid image URL
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Generated Book ID -->
+                  <div class="col-12 mt-2">
+                    <div class="generated-id" id="bookIdDisplay">
+                      <i class="bi bi-hash"></i>
+                      <span>Book ID will be generated upon submission</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="form-actions">
+                <div class="row g-3">
+                  <div class="col-md-8">
+                    <button type="submit" class="btn-submit">
+                      <i class="bi bi-plus-circle"></i>
+                      Add Book to Collection
+                    </button>
+                  </div>
+                  <div class="col-md-4">
+                    <a href="/" class="btn-cancel">
+                      <i class="bi bi-arrow-left"></i>
+                      Back to Dashboard
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">
+            <i class="bi bi-book-half"></i>
+          </div>
+          <div class="footer-logo-text">BookLibrary</div>
+        </div>
+        <p class="footer-description">
+          The ultimate tool for bibliophiles to curate, track, and manage their
+          library collections with unmatched style and efficiency.
+        </p>
+      </div>
+
+      <div class="copyright text-center">
+        <p class="mb-0">
+          © 2026 BookLibrary. All rights reserved.
+          <span class="d-none d-md-inline">|</span><br class="d-md-none">
+          Made with <i class="bi bi-heart-fill text-danger"></i> for readers worldwide.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification toast-success" id="successToast">
+    <div class="toast-icon">
+      <i class="bi bi-check-circle-fill"></i>
+    </div>
+    <div class="toast-content">
+      <div class="toast-title">Success!</div>
+      <div class="toast-message" id="toastMessage">Book added successfully.</div>
+    </div>
+    <button class="toast-close" onclick="hideToast()">
+      <i class="bi bi-x"></i>
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Book ID Generator
+    function generateBookId() {
+      const prefix = 'BOOK';
+      const timestamp = Date.now().toString(36).toUpperCase();
+      const random = Math.random().toString(36).substr(2, 5).toUpperCase();
+      return `${prefix}-${timestamp}-${random}`;
+    }
+
+    // Update preview functions
+    function updateBookCover() {
+      const input = document.getElementById('bookImage');
+      const preview = document.getElementById('liveBookCoverPreview');
+      const placeholder = document.getElementById('imagePlaceholder');
+      const previewText = document.getElementById('previewText');
+
+      if (input.value) {
+        try {
+          const url = new URL(input.value);
+          preview.src = url.toString();
+          preview.style.display = 'block';
+          placeholder.style.display = 'none';
+          previewText.textContent = 'Live Preview';
+        } catch (_) {
+          showImagePlaceholder();
+        }
+      } else {
+        showImagePlaceholder();
+      }
+    }
+
+    function showImagePlaceholder() {
+      const preview = document.getElementById('liveBookCoverPreview');
+      const placeholder = document.getElementById('imagePlaceholder');
+      const previewText = document.getElementById('previewText');
+
+      preview.style.display = 'none';
+      placeholder.style.display = 'flex';
+      previewText.textContent = 'Enter a valid image URL to see preview';
+    }
+
+    // Form validation
+    document.getElementById('addBookForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value.trim();
+      const author = document.getElementById('author').value.trim();
+      const category = document.getElementById('category').value;
+      const price = document.getElementById('price').value;
+      const imageUrl = document.getElementById('bookImage').value.trim();
+
+      let isValid = true;
+      let errorMessage = '';
+
+      // Validate required fields
+      if (!title) {
+        isValid = false;
+        document.getElementById('title').style.borderColor = '#ef4444';
+        errorMessage = 'Book title is required.';
+      }
+
+      if (!author) {
+        isValid = false;
+        document.getElementById('author').style.borderColor = '#ef4444';
+        errorMessage = 'Author name is required.';
+      }
+
+      if (!category) {
+        isValid = false;
+        document.getElementById('category').style.borderColor = '#ef4444';
+        errorMessage = 'Please select a category.';
+      }
+
+      if (!price || parseFloat(price) < 0) {
+        isValid = false;
+        document.getElementById('price').style.borderColor = '#ef4444';
+        errorMessage = 'Please enter a valid price.';
+      }
+
+      if (!imageUrl) {
+        isValid = false;
+        document.getElementById('bookImage').style.borderColor = '#ef4444';
+        errorMessage = 'Image URL is required.';
+      } else {
+        // Validate URL format
+        try {
+          new URL(imageUrl);
+        } catch (_) {
+          isValid = false;
+          document.getElementById('bookImage').style.borderColor = '#ef4444';
+          errorMessage = 'Please enter a valid image URL.';
+        }
+      }
+
+      if (!isValid) {
+        showToast(errorMessage, 'error');
+        return;
+      }
+
+      // Generate and display book ID
+      const bookId = generateBookId();
+      const bookIdDisplay = document.getElementById('bookIdDisplay');
+      bookIdDisplay.innerHTML = `<i class="bi bi-hash"></i><span>Book ID: ${bookId}</span>`;
+
+      // Update progress steps
+      const stepIcons = document.querySelectorAll('.step-icon');
+      const stepLabels = document.querySelectorAll('.step-label');
+
+      stepIcons[1].classList.add('active');
+      stepLabels[1].classList.add('active');
+
+      // Show success message
+      showToast('Book details validated successfully! Submitting...', 'success');
+
+      // Submit form after delay
+      setTimeout(() => {
+        stepIcons[2].classList.add('active');
+        stepLabels[2].classList.add('active');
+        this.submit();
+      }, 1500);
+    });
+
+    // Real-time validation
+    const inputs = document.querySelectorAll('input[required], select[required]');
+    inputs.forEach(input => {
+      input.addEventListener('input', function () {
+        if (this.value.trim()) {
+          this.style.borderColor = '';
+        }
+      });
+
+      input.addEventListener('blur', function () {
+        if (this.type === 'url' && this.value.trim()) {
+          try {
+            new URL(this.value.trim());
+            this.style.borderColor = '#10b981';
+          } catch (_) {
+            this.style.borderColor = '#ef4444';
+          }
+        }
+      });
+    });
+
+    // Price formatting
+    document.getElementById('price').addEventListener('blur', function (e) {
+      const value = parseFloat(e.target.value);
+      if (!isNaN(value) && value >= 0) {
+        e.target.value = value.toFixed(2);
+      }
+    });
+
+    // Toast notification functions
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('successToast');
+      const messageElement = document.getElementById('toastMessage');
+      const icon = toast.querySelector('.toast-icon i');
+
+      messageElement.textContent = message;
+
+      if (type === 'error') {
+        toast.classList.remove('toast-success');
+        toast.classList.add('toast-error');
+        icon.className = 'bi bi-exclamation-triangle-fill';
+        icon.parentElement.style.background = 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2))';
+        icon.parentElement.style.color = '#ef4444';
+      } else {
+        toast.classList.remove('toast-error');
+        toast.classList.add('toast-success');
+        icon.className = 'bi bi-check-circle-fill';
+        icon.parentElement.style.background = 'linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(21, 128, 61, 0.2))';
+        icon.parentElement.style.color = '#10b981';
+      }
+
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        hideToast();
+      }, 5000);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('successToast');
+      toast.classList.remove('show');
+    }
+
+    // URL parameters handling for success messages
+    document.addEventListener('DOMContentLoaded', function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const success = urlParams.get('success');
+      const message = urlParams.get('message');
+
+      if (success === 'true' && message) {
+        showToast(message);
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      // Auto-focus on first input
+      document.getElementById('title').focus();
+
+      // Initialize preview
+      updateBookCover();
+    });
+
+    // Auto-generate suggestions
+    const bookExamples = [
+      { title: "The Alchemist", author: "Paulo Coelho", category: "Fiction", price: "399.99" },
+      { title: "Atomic Habits", author: "James Clear", category: "Self-Help", price: "499.99" },
+      { title: "The Lean Startup", author: "Eric Ries", category: "Business", price: "599.99" },
+      { title: "Sapiens", author: "Yuval Noah Harari", category: "History", price: "699.99" },
+      { title: "The Silent Patient", author: "Alex Michaelides", category: "Mystery", price: "349.99" }
+    ];
+
+    // Add example selection
+    const titleInput = document.getElementById('title');
+    titleInput.addEventListener('focus', function () {
+      if (!this.value) {
+        this.setAttribute('placeholder', 'Type or select from suggestions...');
+      }
+    });
+
+    // Category auto-complete
+    const categorySelect = document.getElementById('category');
+    categorySelect.addEventListener('focus', function () {
+      this.size = 6;
+    });
+
+    categorySelect.addEventListener('blur', function () {
+      this.size = 1;
+    });
+
+    categorySelect.addEventListener('change', function () {
+      this.size = 1;
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        document.querySelector('.btn-submit').click();
+      }
+
+      // Escape to cancel
+      if (e.key === 'Escape') {
+        window.location.href = '/';
+      }
+    });
+
+    titleInput.addEventListener('input', function (e) {
+      const value = e.target.value.toLowerCase();
+      if (value.length > 2) {
+        const match = bookExamples.find(book =>
+          book.title.toLowerCase().includes(value) ||
+          book.author.toLowerCase().includes(value)
+        );
+
+        if (match) {
+          console.log('Suggestion:', match);
+        }
+      }
+    });
+    let autoSaveTimer;
+    const formInputs = document.querySelectorAll('#addBookForm input, #addBookForm select');
+
+    formInputs.forEach(input => {
+      input.addEventListener('input', function () {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+          console.log('Auto-save triggered');
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+
+</html>
