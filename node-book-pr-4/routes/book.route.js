@@ -1,5 +1,5 @@
 const express = require('express')
-const { homepage, addbookspage, addbook, deleteBook, editBook, updateBook } = require('../Controller/book.controller')
+const { homepage, addbookspage, addbook, deleteBook, editBook, updateBook } = require('../controller/book.controller')
 const routes = express.Router()
 
 routes.get('/',homepage)
