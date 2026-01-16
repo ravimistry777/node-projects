@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const dbconnection = () => {
-    mongoose.connect('mongodb+srv://sqravi777_db_user:7069695001%40Ravi@cluster0.usosjrr.mongodb.net/', {
+    mongoose.connect(process.env.MONGO_URI, {
         serverSelectionTimeoutMS: 5000
     })
         .then(() => {
@@ -12,4 +12,4 @@ const dbconnection = () => {
         })
 }
 
-module.exports = dbconnection
+module.exports = dbconnection;
