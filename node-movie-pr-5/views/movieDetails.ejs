@@ -1,0 +1,78 @@
+<div class="movie-details-container animate-fade-in">
+    <div class="row g-5">
+        <!-- Poster Column -->
+        <div class="col-lg-5">
+            <div class="details-poster-wrapper shadow-lg">
+                <% if (movie.movieImage) { %>
+                    <img src="<%= movie.movieImage %>" alt="<%= movie.title %>" class="details-poster">
+                    <% } else { %>
+                        <div class="details-poster-placeholder">
+                            <i class="fas fa-film fa-5x opacity-25"></i>
+                        </div>
+                        <% } %>
+                            <% if (movie.rating) { %>
+                                <div class="details-rating-badge">
+                                    <i class="fas fa-star me-2"></i>
+                                    <%= movie.rating %> / 10
+                                </div>
+                                <% } %>
+            </div>
+        </div>
+
+        <!-- Info Column -->
+        <div class="col-lg-7">
+            <div class="movie-info-card p-4 p-md-5 h-100">
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/" class="text-danger text-decoration-none"><i
+                                    class="fas fa-home me-1"></i> Home</a></li>
+                        <li class="breadcrumb-item active text-white opacity-50">
+                            <%= movie.genre %>
+                        </li>
+                    </ol>
+                </nav>
+
+                <h1 class="display-3 fw-bold mb-3">
+                    <%= movie.title %>
+                </h1>
+
+                <div class="d-flex flex-wrap gap-3 mb-5">
+                    <span class="badge rounded-pill bg-danger px-4 py-2 fs-6">
+                        <i class="fas fa-video me-2"></i>
+                        <%= movie.genre %>
+                    </span>
+                    <span class="badge rounded-pill bg-dark border border-secondary px-4 py-2 fs-6">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        <%= movie.year %>
+                    </span>
+                    <span class="badge rounded-pill bg-dark border border-secondary px-4 py-2 fs-6">
+                        <i class="fas fa-user-edit me-2"></i>Directed by <%= movie.director %>
+                    </span>
+                </div>
+
+                <div class="mb-5">
+                    <h4 class="text-danger fw-bold mb-3 uppercase tracking-wider">The Synopsis</h4>
+                    <p class="lead text-gray lh-lg">
+                        <%= movie.description
+                            || "The cinematic details for this title are currently being archived. Experience the magic of storytelling as you delve into the world of "
+                            + movie.title + "." %>
+                    </p>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3 mt-auto">
+                    <a href="/edit-movie/<%= movie._id %>" class="btn btn-danger btn-lg px-5 py-3 shadow">
+                        <i class="fas fa-edit me-2"></i>Edit Movie
+                    </a>
+                    <a href="/" class="btn btn-outline-light btn-lg px-5 py-3">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Gallery
+                    </a>
+                    <a href="/delete-movie/<%= movie._id %>"
+                        class="btn btn-link text-muted mt-3 mt-md-0 d-flex align-items-center text-decoration-none hover-danger"
+                        onclick="return confirmDelete('<%= movie.title %>')">
+                        <i class="fas fa-trash-alt me-2"></i>Remove from Collection
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

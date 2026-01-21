@@ -1,0 +1,96 @@
+<div class="row justify-content-center animate-fade-in">
+    <div class="col-md-8 col-lg-7">
+        <div class="card-form shadow-lg">
+            <div class="text-center mb-5">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger rounded-circle mb-3"
+                    style="width: 60px; height: 60px; box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);">
+                    <i class="fas fa-edit text-white fs-4"></i>
+                </div>
+                <h2 class="fw-bold">Edit <span class="text-danger">Movie</span></h2>
+                <p class="text-muted text-truncate px-3">Modifying: <strong>
+                        <%= movie.title %>
+                    </strong></p>
+            </div>
+
+            <form action="/update-movie/<%= movie._id %>" method="POST" enctype="multipart/form-data">
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Movie Title</label>
+                        <input type="text" class="form-control" name="title" value="<%= movie.title %>" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Director</label>
+                        <input type="text" class="form-control" name="director" value="<%= movie.director %>" required>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Genre</label>
+                        <select class="form-select" name="genre" required>
+                            <option value="Action" <%=movie.genre==='Action' ? 'selected' : '' %>>Action</option>
+                            <option value="Comedy" <%=movie.genre==='Comedy' ? 'selected' : '' %>>Comedy</option>
+                            <option value="Drama" <%=movie.genre==='Drama' ? 'selected' : '' %>>Drama</option>
+                            <option value="Horror" <%=movie.genre==='Horror' ? 'selected' : '' %>>Horror</option>
+                            <option value="Sci-Fi" <%=movie.genre==='Sci-Fi' ? 'selected' : '' %>>Sci-Fi</option>
+                            <option value="Thriller" <%=movie.genre==='Thriller' ? 'selected' : '' %>>Thriller</option>
+                            <option value="Animation" <%=movie.genre==='Animation' ? 'selected' : '' %>>Animation
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Year</label>
+                        <input type="number" class="form-control" name="year" value="<%= movie.year %>" min="1900"
+                            max="2026" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Rating</label>
+                        <input type="number" class="form-control" name="rating" value="<%= movie.rating %>" min="1"
+                            max="10" step="0.1">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Cinematic Synopsis</label>
+                    <textarea class="form-control" name="description" rows="4"><%= movie.description %></textarea>
+                </div>
+
+                <% if (movie.movieImage) { %>
+                    <div class="mb-4">
+                        <label class="form-label d-block text-center">Current Poster</label>
+                        <div class="text-center">
+                            <img src="<%= movie.movieImage %>" alt="Poster"
+                                class="img-thumbnail bg-transparent border-secondary"
+                                style="max-height: 200px; border-radius: 12px;">
+                        </div>
+                    </div>
+                    <% } %>
+
+                        <div class="mb-5">
+                            <label class="form-label">Replace Poster (Optional)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-end-0"
+                                    style="border-color: var(--glass-border);">
+                                    <i class="fas fa-upload text-muted"></i>
+                                </span>
+                                <input type="file" class="form-control border-start-0" name="movieImage"
+                                    accept="image/*" style="border-color: var(--glass-border);">
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <a href="/" class="btn btn-outline-primary w-100 py-3">
+                                    <i class="fas fa-arrow-left me-2"></i>Cancel
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-danger w-100 py-3">
+                                    <i class="fas fa-save me-2"></i>Update Movie
+                                </button>
+                            </div>
+                        </div>
+            </form>
+        </div>
+    </div>
+</div>

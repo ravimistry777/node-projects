@@ -1,0 +1,133 @@
+<div class="animate-fade-in">
+    <!-- Header Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-8">
+            <h1 class="display-4 fw-bold mb-2">
+                Cinematic <span class="text-danger">Collection</span>
+            </h1>
+            <p class="text-muted lead">Your personal gateway to the world of movies.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="/addmovies" class="btn btn-danger btn-lg shadow">
+                <i class="fas fa-plus-circle me-2"></i>Add New Movie
+            </a>
+        </div>
+    </div>
+
+    <!-- Search & Filter Section -->
+    <div class="row mb-5 g-3 align-items-stretch">
+        <div class="col-lg-8">
+            <form action="/search" method="GET" class="search-container shadow-sm h-100">
+                <i class="fas fa-search text-muted ms-3"></i>
+                <input type="text" class="form-control search-input" name="query"
+                    placeholder="Search by title, director or genre..."
+                    value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
+                <button type="submit" class="btn btn-danger py-2">Search</button>
+            </form>
+        </div>
+        <div class="col-lg-4">
+            <div class="dropdown d-inline-block w-100 h-100">
+                <button
+                    class="btn btn-outline-primary dropdown-toggle w-100 h-100 py-2 d-flex justify-content-between align-items-center"
+                    type="button" data-bs-toggle="dropdown">
+                    <span><i class="fas fa-sort-amount-down me-2"></i>Sort By</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg border-0 w-100 p-2">
+                    <li><a class="dropdown-item rounded py-2" href="/sort?sortBy=recent"><i
+                                class="fas fa-clock me-2"></i>Recent</a></li>
+                    <li><a class="dropdown-item rounded py-2" href="/sort?sortBy=title"><i
+                                class="fas fa-sort-alpha-down me-2"></i>Title (A-Z)</a></li>
+                    <li><a class="dropdown-item rounded py-2" href="/sort?sortBy=year"><i
+                                class="fas fa-calendar-alt me-2"></i>Year</a></li>
+                    <li><a class="dropdown-item rounded py-2" href="/sort?sortBy=rating"><i
+                                class="fas fa-star me-2"></i>Rating</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movies Grid -->
+    <% if (movies && movies.length> 0) { %>
+        <div class="movie-grid">
+            <% movies.forEach((movie, index)=> { %>
+                <div class="movie-card animate-fade-in" style="animation-delay: <%= index * 0.1 %>s">
+                    <a href="/movie/<%= movie._id %>" class="text-decoration-none h-100 d-flex flex-column">
+                        <% if (movie.rating) { %>
+                            <div class="rating-badge">
+                                <i class="fas fa-star me-1"></i>
+                                <%= movie.rating %>
+                            </div>
+                            <% } %>
+
+                                <!-- Thumbnail Section -->
+                                <div class="movie-thumbnail">
+                                    <% if (movie.movieImage) { %>
+                                        <img src="<%= movie.movieImage %>" alt="<%= movie.title %>"
+                                            class="thumbnail-img">
+                                        <% } else { %>
+                                            <div class="thumbnail-placeholder">
+                                                <i class="fas fa-film fa-3x opacity-25"></i>
+                                            </div>
+                                            <% } %>
+                                                <div class="thumbnail-overlay">
+                                                    <span class="btn btn-light btn-sm rounded-pill px-3">View
+                                                        Details</span>
+                                                </div>
+                                </div>
+
+                                <div class="movie-card-body">
+                                    <div class="mb-3">
+                                        <span class="badge-genre text-danger">
+                                            <%= movie.genre %>
+                                        </span>
+                                    </div>
+                                    <h3 class="movie-title text-truncate" title="<%= movie.title %>">
+                                        <%= movie.title %>
+                                    </h3>
+
+                                    <div class="movie-meta">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <i class="fas fa-user-tie me-2 fs-6 opacity-50"></i>
+                                            <span class="text-truncate">
+                                                <%= movie.director %>
+                                            </span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-calendar-day me-2 fs-6 opacity-50"></i>
+                                            <span>
+                                                <%= movie.year %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                    </a>
+
+                    <div class="movie-actions-footer px-4 pb-4 mt-auto">
+                        <div class="movie-actions d-flex gap-2">
+                            <a href="/edit-movie/<%= movie._id %>" class="btn btn-outline-primary flex-grow-1 py-1">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </a>
+                            <a href="/delete-movie/<%= movie._id %>" class="btn btn-outline-danger py-1"
+                                onclick="return confirmDelete('<%= movie.title %>')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+        <% } else { %>
+            <div class="card-form text-center py-5 mt-4">
+                <div class="mb-4">
+                    <i class="fas fa-film fa-5x text-muted opacity-25"></i>
+                </div>
+                <h2 class="fw-bold mb-3">No movies found</h2>
+                <p class="text-muted mb-5 mx-auto" style="max-width: 400px;">
+                    Your collection looks a bit empty. Why not add some cinematic masterpieces to get started?
+                </p>
+                <a href="/addmovies" class="btn btn-danger btn-lg px-5">
+                    <i class="fas fa-plus-circle me-2"></i>Add Your First Movie
+                </a>
+            </div>
+            <% } %>
+</div>
