@@ -1,0 +1,136 @@
+<%- include('../header') %>
+
+<style>
+.article-hero {
+    height: 400px;
+    width: 100%;
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.article-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.article-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.article-meta-badge {
+    background: var(--bg-surface);
+    padding: 6px 14px;
+    border-radius: 50px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border-light);
+    font-weight: 500;
+}
+
+.article-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--text-main);
+}
+
+.article-content p {
+    margin-bottom: 1.5rem;
+}
+
+.author-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    margin-top: 3rem;
+}
+
+.author-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--bg-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+}
+</style>
+
+<div class="page-content py-4">
+    
+    <div class="article-container">
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="/blog/view-blogs" class="text-muted text-decoration-none hover-dark d-inline-flex align-items-center gap-2">
+                <i class="bi bi-arrow-left"></i>
+                <span class="fw-medium">Back to Blogs</span>
+            </a>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="article-hero fade-in-up">
+            <img src="<%= blog.blogImage || 'https://placehold.co/1200x600?text=Cover+Image' %>" alt="Blog Cover">
+        </div>
+
+        <!-- Content Section -->
+        <div class="card border-0 shadow-sm fade-in-up" style="animation-delay: 0.1s;">
+            <div class="card-body p-5">
+                
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <span class="article-meta-badge">
+                        <i class="bi bi-calendar3 text-muted"></i>
+                        <%= new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+                    </span>
+                    <span class="article-meta-badge">
+                        <i class="bi bi-person text-muted"></i>
+                        <%= blog.author || 'Admin' %>
+                    </span>
+                    <span class="article-meta-badge">
+                        <i class="bi bi-folder text-muted"></i>
+                        Technology
+                    </span>
+                </div>
+
+                <h1 class="display-6 fw-bold text-main mb-4"><%= blog.title %></h1>
+                
+                <hr class="border-light mb-5">
+
+                <div class="article-content">
+                    <%= blog.content %>
+                </div>
+
+                <!-- Author Box -->
+                <div class="author-card">
+                    <div class="author-avatar">
+                        <%= (blog.author || 'A').charAt(0).toUpperCase() %>
+                    </div>
+                    <div>
+                        <div class="small text-muted text-uppercase fw-bold ls-1 mb-1">Written by</div>
+                        <h6 class="fw-bold text-main mb-0"><%= blog.author || 'Admin User' %></h6>
+                    </div>
+                    <div class="ms-auto">
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3">Follow</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../footer') %>

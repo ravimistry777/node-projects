@@ -1,0 +1,114 @@
+<%- include('../header') %>
+
+<div class="page-content py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
+        <div>
+            <h4 class="fw-bold m-0 text-dark">Blog Posts</h4>
+            <p class="text-muted small m-0">Manage your content and publications</p>
+        </div>
+        <a href="/blog/add-blog" class="btn btn-dark">
+            <i class="bi bi-plus-lg me-2"></i>New Post
+        </a>
+    </div>
+
+    <!-- Data Table Section -->
+    <div class="card border-0 shadow-sm fade-in-up" style="animation-delay: 0.1s;">
+        <!-- Table Header -->
+        <div class="card-header d-flex justify-content-between align-items-center bg-white py-3">
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-light active fw-medium">Published</button>
+                <button class="btn btn-sm btn-light text-muted">Drafts</button>
+            </div>
+            <form method="get" action="/blog/view-blogs" class="d-flex gap-2">
+                <div class="position-relative" style="width: 250px;">
+                    <i class="bi bi-search position-absolute text-muted" style="top: 50%; transform: translateY(-50%); left: 12px; font-size: 0.85rem;"></i>
+                    <input type="text" name="search" class="form-control form-control-sm ps-4 bg-light border-0" placeholder="Search posts..." value="<%= query?.search || '' %>" style="padding-left: 35px !important;">
+                </div>
+            </form>
+        </div>
+
+        <!-- Table Content -->
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 text-secondary text-uppercase" style="width: 50px; font-size: 0.75rem; letter-spacing: 0.05em;">#</th>
+                        <th class="text-secondary text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Post</th>
+                        <th class="text-secondary text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Author</th>
+                        <th class="text-secondary text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Status</th>
+                        <th class="pe-4 text-end text-secondary text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% blogs.map((v, i) => { %>
+                    <tr>
+                        <td class="ps-4 text-muted"><%= ++i %></td>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="<%= v.blogImage %>" alt="blog" class="rounded-3 border" width="48" height="48" style="object-fit: cover;">
+                                <div>
+                                    <div class="fw-medium text-dark text-truncate" style="max-width: 300px;"><%= v.title %></div>
+                                    <div class="small text-muted text-truncate" style="max-width: 300px;"><%= v.content.substring(0, 50) %>...</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle bg-light text-secondary border" style="width: 24px; height: 24px; font-size: 0.75rem;">
+                                    <%= v.author.charAt(0).toUpperCase() %>
+                                </div>
+                                <span class="text-secondary small"><%= v.author %></span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-success-subtle text-success rounded-pill fw-normal border border-success-subtle px-2">Published</span>
+                        </td>
+                        <td class="pe-4 text-end">
+                            <div class="d-flex justify-content-end gap-1">
+                                <a href="/blog/read-more/<%= v.id %>" class="btn btn-sm btn-light text-secondary border-0" data-bs-toggle="tooltip" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="/blog/edit-blog/<%= v.id %>" class="btn btn-sm btn-light text-secondary border-0" data-bs-toggle="tooltip" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="/blog/delete-blog/<%= v.id %>" class="btn btn-sm btn-light text-secondary border-0" data-bs-toggle="tooltip" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                    
+                    <% if (blogs.length === 0) { %>
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                <div class="bg-light rounded-circle p-3 mb-3">
+                                    <i class="bi bi-journal-text text-muted fs-4"></i>
+                                </div>
+                                <h6 class="text-dark mb-1">No posts found</h6>
+                                <p class="text-muted small mb-0">Create your first blog post to get started.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Table Footer -->
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+             <small class="text-muted">Showing <%= blogs.length %> results</small>
+             <nav>
+                <ul class="pagination pagination-sm mb-0 gap-1">
+                    <li class="page-item disabled"><a class="page-link border-0 text-muted bg-transparent" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link rounded-2 border-0 bg-dark text-white" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link border-0 text-muted bg-transparent" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<%- include('../footer') %>

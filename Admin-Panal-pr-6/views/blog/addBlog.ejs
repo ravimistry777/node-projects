@@ -1,0 +1,78 @@
+<%- include('../header') %>
+
+<div class="page-content py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <a href="/blog/view-blogs" class="text-muted text-decoration-none hover-dark">
+                    <i class="bi bi-arrow-left"></i> Blogs
+                </a>
+                <span class="text-muted">/</span>
+                <span class="text-dark fw-medium">New</span>
+            </div>
+            <h4 class="fw-bold m-0 text-dark">Create Blog Post</h4>
+        </div>
+    </div>
+
+    <div class="row justify-content-center fade-in-up" style="animation-delay: 0.1s;">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <form method="post" action="/blog/add-blog" enctype="multipart/form-data">
+                        
+                        <!-- Section: Details -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Post Details</h6>
+                            
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <label class="form-label small fw-medium text-secondary">Title</label>
+                                    <input type="text" class="form-control bg-light border-0" name="title" placeholder="e.g. The Making Of NODE.JS" required style="padding: 10px 12px;">
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-medium text-secondary">Author</label>
+                                    <input type="text" class="form-control bg-light border-0" name="author" placeholder="e.g. Ryan Dahl" required style="padding: 10px 12px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section: Content -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Content</h6>
+                            <div class="col-12">
+                                <label class="form-label small fw-medium text-secondary">Body</label>
+                                <textarea name="content" class="form-control bg-light border-0" rows="8" placeholder="Start writing your story..." required style="padding: 12px; resize: vertical;"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Section: Cover Image -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Cover Image</h6>
+                            <div class="d-flex align-items-start gap-4">
+                                <div class="d-flex align-items-center justify-content-center bg-light rounded-3 text-muted" style="width: 80px; height: 60px; border: 1px dashed var(--border-focus);">
+                                    <i class="bi bi-image fs-4"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <input type="file" name="blogImage" class="form-control bg-light border-0" style="padding: 10px 12px;">
+                                    <div class="form-text text-muted small mt-2">Recommended size: 1200x630px. JPG, PNG.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-light my-5">
+
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="/blog/view-blogs" class="btn btn-light px-4 text-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-dark px-4">Publish Post</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../footer') %>

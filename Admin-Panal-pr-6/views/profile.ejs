@@ -1,0 +1,203 @@
+<%- include('header') %>
+
+<style>
+.profile-header-wrapper {
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-light);
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+.profile-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: var(--shadow-sm);
+}
+
+.profile-stat-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.activity-timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-light);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 2rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -2.35rem;
+    top: 0.25rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--border-light);
+}
+
+.timeline-dot.active {
+    background: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary);
+}
+</style>
+
+<!-- Profile Header Section -->
+<div class="profile-header-wrapper">
+    <div class="container">
+        <div class="d-flex align-items-center gap-4">
+            <div class="position-relative">
+                <img src="<%= user.profileImage || 'https://placehold.co/120x120' %>" class="profile-avatar-large" alt="Profile">
+                <span class="position-absolute bottom-0 end-0 p-2 bg-success border border-white rounded-circle">
+                    <span class="visually-hidden">Online</span>
+                </span>
+            </div>
+            <div>
+                <h1 class="h3 fw-bold text-main mb-1"><%= user.firstname %> <%= user.lastname %></h1>
+                <p class="text-secondary mb-3"><%= user.email %></p>
+                <div class="d-flex gap-2">
+                    <a href="/admin/edit-admin/<%= user.id %>" class="btn btn-dark btn-sm px-3 text-decoration-none">
+                        <i class="bi bi-pencil me-2"></i>Edit Profile
+                    </a>
+                    <a href="/change-password" class="btn btn-outline-secondary btn-sm px-3">
+                        <i class="bi bi-key me-2"></i>Change Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row g-4">
+        <!-- Left Column: Personal Info -->
+        <div class="col-lg-4">
+            <div class="card-saas h-100">
+                <div class="card-header border-0 bg-transparent pt-4 px-4 pb-0">
+                    <h5 class="fw-bold text-main mb-0">About</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="mb-4">
+                        <label class="small text-muted fw-bold text-uppercase ls-1 mb-1">Gender</label>
+                        <p class="text-main fw-medium mb-0"><%= user.gender || 'Not Specified' %></p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="small text-muted fw-bold text-uppercase ls-1 mb-1">Contact</label>
+                        <p class="text-main fw-medium mb-0"><%= user.mobileNo || 'N/A' %></p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="small text-muted fw-bold text-uppercase ls-1 mb-1">City</label>
+                        <p class="text-main fw-medium mb-0"><%= user.city || 'New York, USA' %></p>
+                    </div>
+
+                    <div class="mb-0">
+                        <label class="small text-muted fw-bold text-uppercase ls-1 mb-1">Joined</label>
+                        <p class="text-main fw-medium mb-0">January 2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Activity & Stats -->
+        <div class="col-lg-8">
+            <!-- Stats Row -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="profile-stat-card text-center">
+                        <h3 class="fw-bold text-main mb-1">12</h3>
+                        <p class="text-muted small mb-0">Blog Posts</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="profile-stat-card text-center">
+                        <h3 class="fw-bold text-main mb-1">1.2k</h3>
+                        <p class="text-muted small mb-0">Total Views</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="profile-stat-card text-center">
+                        <h3 class="fw-bold text-main mb-1">85%</h3>
+                        <p class="text-muted small mb-0">Engagement</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Feed -->
+            <div class="card-saas">
+                <div class="card-header border-0 bg-transparent pt-4 px-4 pb-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold text-main mb-0">Recent Activity</h5>
+                    <button class="btn btn-sm btn-link text-muted text-decoration-none">View All</button>
+                </div>
+                <div class="card-body p-4">
+                    <div class="activity-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot active"></div>
+                            <p class="text-main fw-medium mb-1">Published a new blog post</p>
+                            <p class="text-muted small mb-0">"The Future of AI in Web Development"</p>
+                            <small class="text-muted mt-1 d-block">2 hours ago</small>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <p class="text-main fw-medium mb-1">Updated profile information</p>
+                            <p class="text-muted small mb-0">Changed profile picture and bio</p>
+                            <small class="text-muted mt-1 d-block">Yesterday</small>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <p class="text-main fw-medium mb-1">Login detected</p>
+                            <p class="text-muted small mb-0">Logged in from new device (MacBook Pro)</p>
+                            <small class="text-muted mt-1 d-block">3 days ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings Preview -->
+            <div class="card-saas mt-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="fw-bold text-main mb-1">Two-Factor Authentication</h6>
+                            <p class="text-muted small mb-0">Add an extra layer of security to your account.</p>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" checked>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%- include('footer') %>

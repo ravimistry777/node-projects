@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Panel</title>
+
+<!-- Fonts: Outfit for modern tech feel -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+:root {
+  /* Warm SaaS Palette */
+  --bg-body: #fafaf9; /* Stone-50 */
+  --bg-sidebar: #f5f5f4; /* Stone-100 */
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f5f5f4;
+  
+  --text-main: #292524; /* Stone-800 */
+  --text-secondary: #57534e; /* Stone-600 */
+  --text-muted: #a8a29e; /* Stone-400 */
+  
+  --primary: #1c1917; /* Stone-900 (Black-ish) */
+  --primary-hover: #44403c;
+  --accent: #d97706; /* Amber-600 (Subtle pop) */
+  
+  --border-light: #e7e5e4; /* Stone-200 */
+  --border-focus: #a8a29e;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  
+  --radius-md: 6px;
+  --radius-lg: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
+
+/* LAYOUT */
+#wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  z-index: 50;
+}
+
+.sidebar-brand {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+  padding-left: 12px;
+}
+
+.sidebar-brand i {
+  font-size: 1.25rem;
+  color: var(--primary);
+}
+
+.sidebar-heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0 0 12px 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-item {
+  list-style: none;
+  margin-bottom: 4px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.nav-link i {
+  font-size: 1rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(0,0,0,0.03);
+  color: var(--text-main);
+}
+
+.nav-link:hover i {
+  color: var(--text-main);
+}
+
+.nav-item.active .nav-link {
+  background: #e7e5e4;
+  color: var(--text-main);
+}
+
+.nav-item.active .nav-link i {
+  color: var(--text-main);
+}
+
+/* SUBMENU STYLES */
+.nav-sublink {
+  display: block;
+  padding: 8px 12px 8px 12px;
+  margin-left: 24px; /* Indent */
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+  position: relative;
+  text-decoration: none;
+  border-left: 1px solid var(--border-light);
+}
+
+.nav-sublink:hover {
+  color: var(--text-main);
+  border-left-color: var(--text-muted);
+}
+
+.nav-sublink.active {
+  color: var(--primary);
+  font-weight: 600;
+  background: rgba(0,0,0,0.04);
+  border-left-color: var(--primary);
+}
+
+/* Parent Active State */
+.nav-item.active-parent > .nav-link {
+  color: var(--text-main);
+  background: rgba(0,0,0,0.03);
+}
+.nav-item.active-parent > .nav-link i {
+  color: var(--text-main);
+}
+
+/* CONTENT */
+#content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 250px;
+  width: calc(100% - 250px);
+}
+
+/* TOPBAR */
+.topbar {
+  height: 80px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-body);
+  /* border-bottom: 1px solid var(--border-light); Optional: keep minimal */
+}
+
+.search-box {
+  max-width: 320px;
+  width: 100%;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  padding: 10px 16px 10px 36px;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.search-box input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+}
+
+.topbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon-btn {
+  position: relative;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+}
+.icon-btn:hover { 
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
+}
+
+.icon-btn span {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* USER */
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 12px 4px 4px;
+  border-radius: 50px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.user-box:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-light);
+}
+
+.user-box img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-light);
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+/* PAGE CONTENT */
+.page-content {
+  padding: 0 40px 40px 40px;
+  max-width: 1400px; /* Tighter container for focus */
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* GLOBAL CARD STYLES (Replaces glass-card) */
+.glass-card, .card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-light); /* Keep subtle */
+}
+
+.card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  padding: 24px 32px !important;
+}
+
+.card-body {
+  padding: 32px !important;
+}
+
+/* BUTTONS */
+.btn-primary-glass, .btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+.btn-primary-glass:hover, .btn-primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  color: #fff;
+}
+
+.btn-glass {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.btn-glass:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
+  border-color: var(--border-focus);
+}
+
+/* FORMS */
+.form-label {
+  color: var(--text-main);
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.form-control, .form-select {
+  background: #ffffff !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-main) !important;
+  padding: 12px 16px !important;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  font-size: 0.95rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--text-secondary) !important;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05) !important;
+  outline: none;
+}
+
+/* INPUT GROUP FIXES */
+.input-group-text {
+    background: var(--bg-surface-hover) !important;
+    border-color: var(--border-light) !important;
+    color: var(--text-muted) !important;
+}
+
+/* TABLES */
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text-secondary);
+}
+
+.table th {
+  background: var(--bg-body) !important;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: none; /* Sentence case is friendlier */
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--border-light) !important;
+  padding: 16px 24px !important;
+}
+
+.table td {
+  border-bottom: 1px solid var(--border-light) !important;
+  padding: 16px 24px !important;
+  color: var(--text-main);
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--bg-surface-hover) !important;
+}
+
+/* UTILS */
+.text-muted { color: var(--text-muted) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.bg-surface { background-color: var(--bg-surface); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.rounded-lg { border-radius: var(--radius-lg); }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+
+/* ANIMATION (Subtle fade up) */
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="/dashboard" class="sidebar-brand">
+    <i class="bi bi-hexagon-fill"></i>
+    <span>AdminLab</span>
+  </a>
+
+  <ul class="p-0 m-0 d-flex flex-column h-100">
+    <li class="nav-item <%= (typeof path !== 'undefined' && path === '/dashboard') ? 'active' : '' %>">
+      <a class="nav-link" href="/dashboard">
+        <i class="bi bi-grid-1x2-fill"></i> Dashboard
+      </a>
+    </li>
+
+    <div class="sidebar-heading mt-5">Core</div>
+
+    <li class="nav-item <%= (typeof path !== 'undefined' && path.includes('/admin')) ? 'active-parent' : '' %>">
+      <a class="nav-link d-flex justify-content-between" data-bs-toggle="collapse" href="#admins" role="button" aria-expanded="<%= (typeof path !== 'undefined' && path.includes('/admin')) ? 'true' : 'false' %>">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-shield-lock-fill"></i> Admins
+        </div>
+        <i class="bi bi-chevron-down small text-muted"></i>
+      </a>
+      <div class="collapse ps-3 mt-1 <%= (typeof path !== 'undefined' && path.includes('/admin')) ? 'show' : '' %>" id="admins">
+        <a class="nav-sublink <%= (typeof path !== 'undefined' && path === '/admin/add-admin') ? 'active' : '' %>" href="/admin/add-admin">Add Admin</a>
+        <a class="nav-sublink <%= (typeof path !== 'undefined' && path === '/admin/view-admins') ? 'active' : '' %>" href="/admin/view-admins">View Admins</a>
+      </div>
+    </li>
+    
+    <li class="nav-item <%= (typeof path !== 'undefined' && path.includes('/blog')) ? 'active-parent' : '' %>">
+      <a class="nav-link d-flex justify-content-between" data-bs-toggle="collapse" href="#blogs" role="button" aria-expanded="<%= (typeof path !== 'undefined' && path.includes('/blog')) ? 'true' : 'false' %>">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-file-earmark-richtext-fill"></i> Blogs
+        </div>
+        <i class="bi bi-chevron-down small text-muted"></i>
+      </a>
+      <div class="collapse ps-3 mt-1 <%= (typeof path !== 'undefined' && path.includes('/blog')) ? 'show' : '' %>" id="blogs">
+        <a class="nav-sublink <%= (typeof path !== 'undefined' && path === '/blog/add-blog') ? 'active' : '' %>" href="/blog/add-blog">Add Blog</a>
+        <a class="nav-sublink <%= (typeof path !== 'undefined' && path === '/blog/view-blogs') ? 'active' : '' %>" href="/blog/view-blogs">View all Blogs</a>
+      </div>
+    </li>
+
+    <div class="mt-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/logout" style="color: #ef4444;">
+                <i class="bi bi-power" style="color: #ef4444;"></i> Logout
+            </a>
+        </li>
+    </div>
+  </ul>
+</aside>
+
+<!-- CONTENT WRAPPER -->
+<div id="content-wrapper">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="search-box">
+      <i class="bi bi-search position-absolute text-muted" style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+      <input type="text" placeholder="Search system..." style="padding-left: 45px;">
+    </div>
+
+    <div class="topbar-icons">
+      <div class="icon-btn">
+        <i class="bi bi-bell"></i>
+        <span></span>
+      </div>
+      
+      <div class="user-box" onclick="location.href='/profile'">
+        <img src="<%= locals.user ? locals.user.profileImage : 'https://placehold.co/100' %>" alt="User">
+        <div class="d-none d-sm-block">
+            <div class="user-name"><%= locals.user ? locals.user.username : 'Admin' %></div>
+        </div>
+        <i class="bi bi-chevron-down ms-1" style="font-size: .8rem; color: var(--text-muted);"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <div class="page-content">
+
+    <!-- Flash Messages -->
+    <% if (locals.success && locals.success.length > 0) { %>
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mt-3" role="alert" style="background: #ecfdf5; color: #047857;">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <% if (locals.error && locals.error.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mt-3" role="alert" style="background: #fef2f2; color: #b91c1c;">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>

@@ -1,0 +1,101 @@
+<%- include('../header') %>
+
+<div class="page-content py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <a href="/admin/view-admins" class="text-muted text-decoration-none hover-dark">
+                    <i class="bi bi-arrow-left"></i> Admins
+                </a>
+                <span class="text-muted">/</span>
+                <span class="text-dark fw-medium">Edit</span>
+            </div>
+            <h4 class="fw-bold m-0 text-dark">Update Administrator</h4>
+        </div>
+    </div>
+
+    <div class="row justify-content-center fade-in-up" style="animation-delay: 0.1s;">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <form method="post" action="/admin/update-admin" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<%= admin.id %>"/>
+                        
+                        <!-- Section: Profile -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Profile Information</h6>
+                            
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-medium text-secondary">First Name</label>
+                                    <input type="text" class="form-control bg-light border-0" name="firstname" value="<%= admin.firstname %>" required style="padding: 10px 12px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-medium text-secondary">Last Name</label>
+                                    <input type="text" class="form-control bg-light border-0" name="lastname" value="<%= admin.lastname %>" required style="padding: 10px 12px;">
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label small fw-medium text-secondary">Email Address</label>
+                                    <input type="email" class="form-control bg-light border-0" name="email" value="<%= admin.email %>" required style="padding: 10px 12px;">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-medium text-secondary">City</label>
+                                    <select class="form-select bg-light border-0" name="city" required style="padding: 10px 12px; cursor: pointer;">
+                                        <option value="" disabled>Select location</option>
+                                        <% var city = ["Surat", "Vadodara", "Vapi", "Navsari"] %>
+                                        <% city.map((v) => { %>
+                                            <option value="<%= v %>" <%= admin.city == v ? 'selected' : '' %> ><%= v %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-medium text-secondary">Gender</label>
+                                    <div class="d-flex gap-4 mt-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male" <%= admin.gender && admin.gender.toLowerCase() === 'male' ? 'checked' : '' %>>
+                                            <label class="form-check-label text-secondary" for="male">Male</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female" <%= admin.gender && admin.gender.toLowerCase() === 'female' ? 'checked' : '' %>>
+                                            <label class="form-check-label text-secondary" for="female">Female</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section: Security -->
+                        
+                        <!-- Section: Avatar -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Avatar</h6>
+                            <div class="d-flex align-items-start gap-4">
+                                <div class="position-relative">
+                                    <img src="<%= admin.profileImage %>" alt="current profile" class="rounded-circle border" width="64" height="64" style="object-fit: cover;">
+                                </div>
+                                    <div class="flex-grow-1">
+                                    <input type="file" name="profileImage" class="form-control bg-light border-0" style="padding: 10px 12px;">
+                                    <div class="form-text text-muted small mt-2">Upload to replace current image. Recommended: 400x400px.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-light my-5">
+
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="/admin/view-admins" class="btn btn-light px-4 text-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-dark px-4">Save Changes</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../footer') %>
