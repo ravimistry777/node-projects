@@ -1,0 +1,261 @@
+<%- include('../header') %>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4 justify-content-center">
+        <div class="col-sm-12 col-xl-8">
+            <div class="bg-white rounded h-100 p-4 border shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0 text-dark fw-bold">Update Product</h5>
+                    <a href="/product/view-products" class="btn btn-primary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Back
+                    </a>
+                </div>
+
+                <form action="/product/update-product/<%= product.id %>" method="post" enctype="multipart/form-data">
+                    <!-- Category Selection -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Category</label>
+                        <select class="form-select bg-light border-0" name="categoryId" id="categorySelect" required>
+                            <option value="" disabled>-- Select Main Category --</option>
+                            <% categories.map((cat) => { %>
+                                <option value="<%= cat.id %>" <%= product.categoryId.toString() === cat.id ? 'selected' : '' %>><%= cat.categoryName %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- SubCategory Selection (Dependent) -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Sub Category</label>
+                        <select class="form-select bg-light border-0" name="subCategoryId" id="subCategorySelect" required>
+                            <option value="" disabled>-- Select Sub Category --</option>
+                            <% subCategories.map((sub) => { %>
+                                <option value="<%= sub.id %>" <%= product.subCategoryId.toString() === sub.id ? 'selected' : '' %>><%= sub.subCategoryName %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- Extra Category Selection (Dependent) -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Extra Category</label>
+                        <select class="form-select bg-light border-0" name="extraCategoryId" id="extraCategorySelect" required>
+                            <option value="" disabled>-- Select Extra Category --</option>
+                            <% extraCategories.map((extra) => { %>
+                                <option value="<%= extra.id %>" <%= product.extraCategoryId.toString() === extra.id ? 'selected' : '' %>><%= extra.extraCategoryName %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- Product Name -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Product Name</label>
+                        <input type="text" class="form-control bg-light border-0" name="productName" id="productName" value="<%= product.productName %>" placeholder="Enter product name" required>
+                    </div>
+
+                    <!-- Product Price, Size & Stock Row -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label text-muted fw-medium">Product Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 fw-medium">₹</span>
+                                <input type="number" class="form-control bg-light border-0" name="productPrice" id="productPrice" value="<%= product.productPrice %>" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted fw-medium">Available Sizes</label>
+                            
+                            <!-- Size Type Selector -->
+                            <div class="mb-2 d-flex gap-2">
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="sizeType" id="typeNone" value="none">
+                                    <label class="form-check-label small" for="typeNone">None</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="sizeType" id="typeClothing" value="clothing">
+                                    <label class="form-check-label small" for="typeClothing">Clothing</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="sizeType" id="typeFootwear" value="footwear">
+                                    <label class="form-check-label small" for="typeFootwear">Shoes</label>
+                                </div>
+                            </div>
+
+                            <!-- Pass data via data-attribute to avoid EJS syntax errors in script -->
+                            <div class="bg-light p-2 rounded border-0" id="sizeContainer" style="min-height: 40px;" data-current-sizes="<%= JSON.stringify(product.productSize || []) %>">
+                                <!-- Sizes will be rendered by JS -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted fw-medium">Stock Quantity</label>
+                            <input type="number" class="form-control bg-light border-0" name="productStock" id="productStock" value="<%= product.productStock || 0 %>" placeholder="Qty" min="0" required>
+                        </div>
+                    </div>
+
+                    <!-- Product Description -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Description</label>
+                        <textarea class="form-control bg-light border-0" name="productDescription" id="productDescription" rows="3" placeholder="Enter product details" required><%= product.productDescription %></textarea>
+                    </div>
+
+                    <!-- Product Image -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted fw-medium">Product Image</label>
+                        <input type="file" class="form-control bg-light border-0" name="productImage" id="productImage">
+                        <% if(product.productImage) { %>
+                            <div class="mt-2">
+                                <img src="<%= product.productImage %>" alt="Current Image" width="100" class="rounded border">
+                                <small class="text-muted d-block mt-1">Current Image</small>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-medium" id="submitBtn">Update Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const categorySelect = document.getElementById('categorySelect');
+    const subCategorySelect = document.getElementById('subCategorySelect');
+    const extraCategorySelect = document.getElementById('extraCategorySelect');
+
+    // Size Management
+    const sizeContainer = document.getElementById('sizeContainer');
+    const sizeTypes = document.querySelectorAll('input[name="sizeType"]');
+    
+    // Parse existing sizes from data attribute (cleaner and safer than direct EJS injection)
+    let currentSizes = [];
+    try {
+        currentSizes = JSON.parse(sizeContainer.dataset.currentSizes || '[]');
+    } catch (e) {
+        console.error('Error parsing sizes:', e);
+        currentSizes = [];
+    }
+
+    function renderSizes(type) {
+        let html = '';
+        if (type === 'clothing') {
+            const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+            sizes.forEach(size => {
+                const checked = currentSizes.includes(size) ? 'checked' : '';
+                html += `
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="productSize[]" value="${size}" id="size${size}" ${checked}>
+                        <label class="form-check-label" for="size${size}">${size}</label>
+                    </div>`;
+            });
+        } else if (type === 'footwear') {
+            const sizes = ['6', '7', '8', '9', '10', '11'];
+            sizes.forEach(size => {
+                const checked = currentSizes.includes(size) ? 'checked' : '';
+                html += `
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="productSize[]" value="${size}" id="size${size}" ${checked}>
+                        <label class="form-check-label" for="size${size}">${size}</label>
+                    </div>`;
+            });
+        } else {
+            html = '<span class="text-muted small">No sizes available for this product type</span>';
+        }
+        sizeContainer.innerHTML = html;
+    }
+
+    // Determine initial state based on currentSizes
+    if (currentSizes.length > 0) {
+        // Check if it looks like clothing (S/M/L) or footwear (numbers)
+        const isClothing = currentSizes.some(s => ['S', 'M', 'L', 'XL', 'XXL'].includes(s));
+        const isFootwear = currentSizes.some(s => ['6', '7', '8', '9', '10', '11'].includes(s));
+
+        if (isClothing) {
+            document.getElementById('typeClothing').checked = true;
+            renderSizes('clothing');
+        } else if (isFootwear) {
+            document.getElementById('typeFootwear').checked = true;
+            renderSizes('footwear');
+        } else {
+            // Fallback
+            document.getElementById('typeNone').checked = true;
+            renderSizes('none');
+        }
+    } else {
+        document.getElementById('typeNone').checked = true;
+        renderSizes('none');
+    }
+
+    sizeTypes.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            renderSizes(e.target.value);
+        });
+    });
+
+    // 1. Load Sub Categories when Category Changes
+    categorySelect.addEventListener('change', async function() {
+        const categoryId = this.value;
+        
+        // Reset SubCategory & ExtraCategory Dropdowns
+        subCategorySelect.innerHTML = '<option value="" disabled selected>-- Loading... --</option>';
+        subCategorySelect.disabled = true;
+        extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Select Extra Category --</option>';
+        extraCategorySelect.disabled = true;
+
+        if (categoryId) {
+            try {
+                const response = await fetch(`/product/get-subcategories?id=${categoryId}`);
+                const data = await response.json();
+
+                subCategorySelect.innerHTML = '<option value="" disabled selected>-- Select Sub Category --</option>';
+                
+                if (data.subCategories && data.subCategories.length > 0) {
+                    data.subCategories.forEach(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub._id;
+                        option.textContent = sub.subCategoryName;
+                        subCategorySelect.appendChild(option);
+                    });
+                    subCategorySelect.disabled = false;
+                } else {
+                    subCategorySelect.innerHTML = '<option value="" disabled selected>-- No Sub Categories Found --</option>';
+                }
+            } catch (error) {
+                console.error('Error fetching subcategories:', error);
+                subCategorySelect.innerHTML = '<option value="" disabled selected>-- Error Loading Data --</option>';
+            }
+        }
+    });
+
+    // 2. Load Extra Categories when SubCategory Changes
+    subCategorySelect.addEventListener('change', async function() {
+        const subCategoryId = this.value;
+        
+        // Reset ExtraCategory Dropdown
+        extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Loading... --</option>';
+        extraCategorySelect.disabled = true;
+
+        if (subCategoryId) {
+            try {
+                const response = await fetch(`/product/get-extracategories?id=${subCategoryId}`);
+                const data = await response.json();
+
+                extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Select Extra Category --</option>';
+                
+                if (data.extraCategories && data.extraCategories.length > 0) {
+                    data.extraCategories.forEach(extra => {
+                        const option = document.createElement('option');
+                        option.value = extra._id;
+                        option.textContent = extra.extraCategoryName;
+                        extraCategorySelect.appendChild(option);
+                    });
+                    extraCategorySelect.disabled = false;
+                } else {
+                    extraCategorySelect.innerHTML = '<option value="" disabled selected>-- No Extra Categories Found --</option>';
+                }
+            } catch (error) {
+                console.error('Error fetching extra categories:', error);
+                extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Error Loading Data --</option>';
+            }
+        }
+    });
+</script>
+
+<%- include('../footer') %>

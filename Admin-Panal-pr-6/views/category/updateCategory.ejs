@@ -1,0 +1,70 @@
+<%- include('../header') %>
+
+<div class="page-content py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <a href="/category/view-categories" class="text-muted text-decoration-none hover-dark">
+                    <i class="bi bi-arrow-left"></i> Categories
+                </a>
+                <span class="text-muted">/</span>
+                <span class="text-dark fw-medium">Edit</span>
+            </div>
+            <h4 class="fw-bold m-0 text-dark">Update Category</h4>
+        </div>
+    </div>
+
+    <div class="row justify-content-center fade-in-up" style="animation-delay: 0.1s;">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <form method="post" action="/category/update-category" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<%= category.id %>"/>
+                        
+                        <!-- Section: Category Info -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Category Information</h6>
+                            
+                            <div class="row g-4">
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-medium text-secondary">Category Name</label>
+                                    <input type="text" class="form-control bg-light border-0" name="categoryName" value="<%= category.categoryName %>" required style="padding: 10px 12px;">
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label small fw-medium text-secondary">Description</label>
+                                    <textarea class="form-control bg-light border-0" name="description" style="padding: 10px 12px; min-height: 100px;"><%= category.description %></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section: Image -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Image</h6>
+                            <div class="d-flex align-items-start gap-4">
+                                <div class="position-relative">
+                                    <img src="<%= category.categoryImage %>" alt="current image" class="rounded border" width="64" height="64" style="object-fit: cover;">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <input type="file" name="categoryImage" class="form-control bg-light border-0" style="padding: 10px 12px;">
+                                    <div class="form-text text-muted small mt-2">Upload to replace current image. Recommended: 400x400px.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-light my-5">
+
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="/category/view-categories" class="btn btn-light px-4 text-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-dark px-4">Save Changes</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../footer') %>

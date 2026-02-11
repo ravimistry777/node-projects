@@ -1,0 +1,263 @@
+<%- include('../header') %>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4 justify-content-center">
+        <div class="col-sm-12 col-xl-8">
+            <div class="bg-white rounded h-100 p-4 border shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0 text-dark fw-bold">Add New Product</h5>
+                    <a href="/product/view-products" class="btn btn-primary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Back
+                    </a>
+                </div>
+
+                <form action="/product/add-product" method="post" enctype="multipart/form-data">
+                    <!-- Category Selection -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Category</label>
+                        <select class="form-select bg-light border-0" name="categoryId" id="categorySelect" required>
+                            <option value="" disabled selected>-- Select Main Category --</option>
+                            <% categories.map((cat) => { %>
+                                <option value="<%= cat.id %>"><%= cat.categoryName %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- SubCategory Selection (Dependent) -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Sub Category</label>
+                        <select class="form-select bg-light border-0" name="subCategoryId" id="subCategorySelect" required disabled>
+                            <option value="" disabled selected>-- Select Sub Category --</option>
+                        </select>
+                    </div>
+
+                    <!-- Extra Category Selection (Dependent) -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Extra Category</label>
+                        <select class="form-select bg-light border-0" name="extraCategoryId" id="extraCategorySelect" required disabled>
+                            <option value="" disabled selected>-- Select Extra Category --</option>
+                        </select>
+                    </div>
+
+                    <!-- Product Name -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Product Name</label>
+                        <input type="text" class="form-control bg-light border-0" name="productName" id="productName" placeholder="Enter product name" required disabled>
+                    </div>
+
+                    <!-- Product Price, Size & Stock Row -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label text-muted fw-medium">Product Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 fw-medium">₹</span>
+                                <input type="number" class="form-control bg-light border-0" name="productPrice" id="productPrice" placeholder="0.00" required disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted fw-medium">Available Sizes</label>
+                            
+                            <!-- Size Type Selector -->
+                            <div class="mb-2 d-flex gap-2">
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="sizeType" id="typeNone" value="none" checked>
+                                    <label class="form-check-label small" for="typeNone">None</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="sizeType" id="typeClothing" value="clothing">
+                                    <label class="form-check-label small" for="typeClothing">Clothing</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="sizeType" id="typeFootwear" value="footwear">
+                                    <label class="form-check-label small" for="typeFootwear">Shoes</label>
+                                </div>
+                            </div>
+
+                            <div class="bg-light p-2 rounded border-0" id="sizeContainer" style="min-height: 40px;">
+                                <span class="text-muted small">Select a size type above</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted fw-medium">Stock Quantity</label>
+                            <input type="number" class="form-control bg-light border-0" name="productStock" id="productStock" placeholder="Qty" min="0" required disabled>
+                        </div>
+                    </div>
+
+                    <!-- Product Description -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Description</label>
+                        <textarea class="form-control bg-light border-0" name="productDescription" id="productDescription" rows="3" placeholder="Enter product details" required disabled></textarea>
+                    </div>
+
+                    <!-- Product Image -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted fw-medium">Product Image</label>
+                        <input type="file" class="form-control bg-light border-0" name="productImage" id="productImage" required disabled>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-medium" id="submitBtn" disabled>Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const categorySelect = document.getElementById('categorySelect');
+    const subCategorySelect = document.getElementById('subCategorySelect');
+    const extraCategorySelect = document.getElementById('extraCategorySelect');
+
+    // Form fields to toggle
+    const formFields = [
+        document.getElementById('productName'),
+        document.getElementById('productPrice'),
+        document.getElementById('productStock'),
+        document.getElementById('productDescription'),
+        document.getElementById('productImage'),
+        document.getElementById('submitBtn'),
+        // Size radios
+        document.getElementById('typeNone'),
+        document.getElementById('typeClothing'),
+        document.getElementById('typeFootwear')
+    ];
+
+    // Size Management
+    const sizeContainer = document.getElementById('sizeContainer');
+    const sizeTypes = document.querySelectorAll('input[name="sizeType"]');
+
+    function renderSizes(type) {
+        let html = '';
+        if (type === 'clothing') {
+            const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+            sizes.forEach(size => {
+                html += `
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="productSize[]" value="${size}" id="size${size}">
+                        <label class="form-check-label" for="size${size}">${size}</label>
+                    </div>`;
+            });
+        } else if (type === 'footwear') {
+            const sizes = ['6', '7', '8', '9', '10', '11'];
+            sizes.forEach(size => {
+                html += `
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="productSize[]" value="${size}" id="size${size}">
+                        <label class="form-check-label" for="size${size}">${size}</label>
+                    </div>`;
+            });
+        } else {
+            html = '<span class="text-muted small">No sizes available for this product type</span>';
+        }
+        sizeContainer.innerHTML = html;
+    }
+
+    sizeTypes.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            renderSizes(e.target.value);
+        });
+    });
+
+    function toggleFormFields(enable) {
+        formFields.forEach(field => {
+            if (enable) {
+                field.removeAttribute('disabled');
+            } else {
+                field.setAttribute('disabled', 'true');
+            }
+        });
+    }
+
+    // 1. Load Sub Categories when Category Changes
+    categorySelect.addEventListener('change', async function() {
+        const categoryId = this.value;
+        const selectedText = this.options[this.selectedIndex].text.toLowerCase();
+
+        // Auto-detect size type
+        if (selectedText.includes('shoes') || selectedText.includes('footwear') || selectedText.includes('sandal') || selectedText.includes('boot')) {
+            document.getElementById('typeFootwear').checked = true;
+            renderSizes('footwear');
+        } else if (selectedText.includes('cloth') || selectedText.includes('shirt') || selectedText.includes('wear') || selectedText.includes('dress') || selectedText.includes('pant') || selectedText.includes('jeans')) {
+            document.getElementById('typeClothing').checked = true;
+            renderSizes('clothing');
+        } else {
+            document.getElementById('typeNone').checked = true;
+            renderSizes('none');
+        }
+        
+        // Reset SubCategory & ExtraCategory Dropdowns
+        subCategorySelect.innerHTML = '<option value="" disabled selected>-- Loading... --</option>';
+        subCategorySelect.disabled = true;
+        extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Select Extra Category --</option>';
+        extraCategorySelect.disabled = true;
+        toggleFormFields(false);
+
+        if (categoryId) {
+            try {
+                const response = await fetch(`/product/get-subcategories?id=${categoryId}`);
+                const data = await response.json();
+
+                subCategorySelect.innerHTML = '<option value="" disabled selected>-- Select Sub Category --</option>';
+                
+                if (data.subCategories && data.subCategories.length > 0) {
+                    data.subCategories.forEach(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub._id;
+                        option.textContent = sub.subCategoryName;
+                        subCategorySelect.appendChild(option);
+                    });
+                    subCategorySelect.disabled = false;
+                } else {
+                    subCategorySelect.innerHTML = '<option value="" disabled selected>-- No Sub Categories Found --</option>';
+                }
+            } catch (error) {
+                console.error('Error fetching subcategories:', error);
+                subCategorySelect.innerHTML = '<option value="" disabled selected>-- Error Loading Data --</option>';
+            }
+        }
+    });
+
+    // 2. Load Extra Categories when SubCategory Changes
+    subCategorySelect.addEventListener('change', async function() {
+        const subCategoryId = this.value;
+        
+        // Reset ExtraCategory Dropdown
+        extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Loading... --</option>';
+        extraCategorySelect.disabled = true;
+        toggleFormFields(false);
+
+        if (subCategoryId) {
+            try {
+                const response = await fetch(`/product/get-extracategories?id=${subCategoryId}`);
+                const data = await response.json();
+
+                extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Select Extra Category --</option>';
+                
+                if (data.extraCategories && data.extraCategories.length > 0) {
+                    data.extraCategories.forEach(extra => {
+                        const option = document.createElement('option');
+                        option.value = extra._id;
+                        option.textContent = extra.extraCategoryName;
+                        extraCategorySelect.appendChild(option);
+                    });
+                    extraCategorySelect.disabled = false;
+                } else {
+                    extraCategorySelect.innerHTML = '<option value="" disabled selected>-- No Extra Categories Found --</option>';
+                }
+            } catch (error) {
+                console.error('Error fetching extra categories:', error);
+                extraCategorySelect.innerHTML = '<option value="" disabled selected>-- Error Loading Data --</option>';
+            }
+        }
+    });
+
+    // 3. Enable Form when Extra Category is Selected
+    extraCategorySelect.addEventListener('change', function() {
+        if (this.value) {
+            toggleFormFields(true);
+        } else {
+            toggleFormFields(false);
+        }
+    });
+</script>
+
+<%- include('../footer') %>

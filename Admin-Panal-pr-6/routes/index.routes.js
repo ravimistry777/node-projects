@@ -22,5 +22,9 @@ routes.get("/dashboard", passport.checkAuthenticated, dashboard);
 
 routes.use("/admin", passport.checkAuthenticated, require("./admin.routes"));
 routes.use("/blog", passport.checkAuthenticated, require("./blog.routes"));
+routes.use("/category", passport.checkAuthenticated, require("./category.routes"));
+routes.use("/subcategory", passport.checkAuthenticated, require("./subCategory.routes"));
+routes.use("/extracategory", passport.checkAuthenticated, require("./extraCategory.routes"));
+routes.use("/product", passport.checkAuthenticated, require("./product.routes"));
 
 module.exports = routes;

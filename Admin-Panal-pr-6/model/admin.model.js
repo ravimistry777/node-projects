@@ -23,6 +23,9 @@ const adminSchema = mongoose.Schema({
     profileImage: {
         type: String
     },
+    city: {
+        type: String
+    }
 });
 
 

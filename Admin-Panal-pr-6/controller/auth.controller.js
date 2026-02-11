@@ -1,8 +1,10 @@
-const Admin = require("../model/admin.model");
-const Blog = require("../model/blog.model");
+const Admin = require('../model/admin.model');
+const Category = require('../model/category.model');
+const SubCategory = require('../model/subCategory.model');
+const ExtraCategory = require('../model/extraCategory.model');
+const Product = require('../model/product.model');
 const bcrypt = require('bcrypt');
 const otpGenerator = require('otp-generator');
-const os = require('os');
 const sendEmail = require("../middleware/sendEmail");
 
 exports.loginPage = async(req,res) => {
@@ -191,13 +193,26 @@ exports.resetpassword = async (req, res) => {
 exports.dashboard = async (req, res) => {
     try {
         const totalAdmin = await Admin.countDocuments();
-        const totalBlog = await Blog.countDocuments();
-        console.log("Dashboard Stats:", { totalAdmin, totalBlog });
+        const totalCategory = await Category.countDocuments();
+        const totalSubCategory = await SubCategory.countDocuments();
+        const totalExtraCategory = await ExtraCategory.countDocuments();
+        const totalProduct = await Product.countDocuments();
+        
+        // Fetch recent 5 products for the dashboard table
+        const recentProducts = await Product.find()
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .populate('categoryId')
+            .populate('subCategoryId')
+            .populate('extraCategoryId');
+
         return res.render("dashboard", {
             totalAdmin, 
-            totalBlog,
-            totalCategory: 0,
-            totalComment: 0
+            totalCategory,
+            totalSubCategory,
+            totalExtraCategory,
+            totalProduct,
+            recentProducts
         });
     } catch (error) {
         console.log(error);

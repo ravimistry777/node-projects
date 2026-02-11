@@ -1,0 +1,70 @@
+<%- include('../header') %>
+
+<div class="page-content py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <a href="/subcategory/view-subcategories" class="text-muted text-decoration-none hover-dark">
+                    <i class="bi bi-arrow-left"></i> Sub Categories
+                </a>
+                <span class="text-muted">/</span>
+                <span class="text-dark fw-medium">Edit</span>
+            </div>
+            <h4 class="fw-bold m-0 text-dark">Update Sub Category</h4>
+        </div>
+    </div>
+
+    <div class="row justify-content-center fade-in-up" style="animation-delay: 0.1s;">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <form method="post" action="/subcategory/update-subcategory">
+                        <input type="hidden" name="id" value="<%= subCategory.id %>"/>
+                        
+                        <!-- Section: Category Selection -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Main Category</h6>
+                            <div class="col-md-12">
+                                <label class="form-label small fw-medium text-secondary">Select Category</label>
+                                <select class="form-select bg-light border-0" name="categoryId" required style="padding: 10px 12px; cursor: pointer;">
+                                    <option value="" disabled>-- Select Category --</option>
+                                    <% categories.map((cat) => { %>
+                                        <option value="<%= cat._id %>" <%= subCategory.categoryId.toString() == cat._id.toString() ? 'selected' : '' %>><%= cat.categoryName %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Section: Sub Category Info -->
+                        <div class="mb-5">
+                            <h6 class="text-uppercase text-muted fw-bold mb-4" style="font-size: 0.75rem; letter-spacing: 0.05em;">Sub Category Information</h6>
+                            
+                            <div class="row g-4">
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-medium text-secondary">Sub Category Name</label>
+                                    <input type="text" class="form-control bg-light border-0" name="subCategoryName" value="<%= subCategory.subCategoryName %>" required style="padding: 10px 12px;">
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label small fw-medium text-secondary">Description</label>
+                                    <textarea class="form-control bg-light border-0" name="description" style="padding: 10px 12px; min-height: 100px;"><%= subCategory.description %></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-light my-5">
+
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="/subcategory/view-subcategories" class="btn btn-light px-4 text-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-dark px-4">Save Changes</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../footer') %>

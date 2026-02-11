@@ -1,0 +1,105 @@
+<%- include('../header') %>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4 justify-content-center">
+        <div class="col-sm-12 col-xl-8">
+            <div class="bg-white rounded h-100 p-4 border shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0 text-dark fw-bold">Add Extra Category</h5>
+                    <a href="/extracategory/view-extracategories" class="btn btn-primary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Back
+                    </a>
+                </div>
+
+                <form action="/extracategory/add-extracategory" method="post">
+                    <!-- Category Selection -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Main Category</label>
+                        <select class="form-select bg-light border-0" name="categoryId" id="categorySelect" required>
+                            <option value="" disabled selected>-- Select Main Category --</option>
+                            <% categories.map((cat) => { %>
+                                <option value="<%= cat.id %>"><%= cat.categoryName %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- SubCategory Selection (Dependent) -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Select Sub Category</label>
+                        <select class="form-select bg-light border-0" name="subCategoryId" id="subCategorySelect" required disabled>
+                            <option value="" disabled selected>-- Select Sub Category --</option>
+                        </select>
+                    </div>
+
+                    <!-- Extra Category Name -->
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-medium">Extra Category Name</label>
+                        <input type="text" class="form-control bg-light border-0" name="extraCategoryName" id="extraCategoryName" placeholder="Enter extra category name (e.g., T-Shirts)" required disabled>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-medium" id="submitBtn" disabled>Add Extra Category</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const categorySelect = document.getElementById('categorySelect');
+    const subCategorySelect = document.getElementById('subCategorySelect');
+    const extraCategoryName = document.getElementById('extraCategoryName');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function toggleFormFields(enable) {
+        if (enable) {
+            extraCategoryName.removeAttribute('disabled');
+            submitBtn.removeAttribute('disabled');
+        } else {
+            extraCategoryName.setAttribute('disabled', 'true');
+            submitBtn.setAttribute('disabled', 'true');
+        }
+    }
+
+    categorySelect.addEventListener('change', async function() {
+        const categoryId = this.value;
+        
+        // Reset SubCategory Dropdown & Disable Form
+        subCategorySelect.innerHTML = '<option value="" disabled selected>-- Loading... --</option>';
+        subCategorySelect.disabled = true;
+        toggleFormFields(false);
+
+        if (categoryId) {
+            try {
+                const response = await fetch(`/extracategory/get-subcategories?id=${categoryId}`);
+                const data = await response.json();
+
+                subCategorySelect.innerHTML = '<option value="" disabled selected>-- Select Sub Category --</option>';
+                
+                if (data.subCategories && data.subCategories.length > 0) {
+                    data.subCategories.forEach(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub._id;
+                        option.textContent = sub.subCategoryName;
+                        subCategorySelect.appendChild(option);
+                    });
+                    subCategorySelect.disabled = false;
+                } else {
+                    subCategorySelect.innerHTML = '<option value="" disabled selected>-- No Sub Categories Found --</option>';
+                }
+            } catch (error) {
+                console.error('Error fetching subcategories:', error);
+                subCategorySelect.innerHTML = '<option value="" disabled selected>-- Error Loading Data --</option>';
+            }
+        }
+    });
+
+    subCategorySelect.addEventListener('change', function() {
+        if (this.value) {
+            toggleFormFields(true);
+        } else {
+            toggleFormFields(false);
+        }
+    });
+</script>
+
+<%- include('../footer') %>
