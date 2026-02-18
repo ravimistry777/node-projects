@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const dbConnect = require('./config/dbConnect');
 const cookieparser = require('cookie-parser');
@@ -8,7 +9,7 @@ const flash = require('connect-flash');
 const flashMessage = require('./middleware/flashMessage');
 
 const app = express();
-const port = 8888;
+const port = process.env.PORT || 8888;
 
 // Middleware
 app.set('view engine', 'ejs');
@@ -19,8 +20,8 @@ app.use(cookieparser());
 app.use(flash());
 
 app.use(session({
-    name: 'node-9AM',
-    secret: 'develop',
+    name: process.env.SESSION_NAME || 'node-session',
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: true,
     cookie: {

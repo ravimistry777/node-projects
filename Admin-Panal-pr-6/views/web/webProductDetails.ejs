@@ -1,0 +1,158 @@
+<%- include('header') %>
+
+<div class="container my-5 pt-4">
+    <div class="row g-5">
+        <!-- Product Image Section -->
+        <div class="col-md-6">
+            <div class="product-gallery rounded border bg-white p-3 text-center shadow-sm">
+                <% if(product.productImage) { %>
+                    <img src="<%= product.productImage %>" class="img-fluid rounded object-fit-contain" style="max-height: 550px;" alt="<%= product.productName %>">
+                <% } else { %>
+                    <div class="d-flex align-items-center justify-content-center bg-light rounded" style="height: 400px;">
+                        <i class="bi bi-image text-muted fs-1"></i>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="col-md-6">
+            <div class="ps-md-4">
+                <!-- Breadcrumbs -->
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb small text-uppercase fw-semibold mb-0">
+                        <li class="breadcrumb-item"><a href="/?category=<%= product.categoryId._id %>" class="text-decoration-none text-muted"><%= product.categoryId ? product.categoryId.categoryName : 'Uncategorized' %></a></li>
+                        <% if(product.subCategoryId) { %>
+                            <li class="breadcrumb-item"><a href="/?subcategory=<%= product.subCategoryId._id %>" class="text-decoration-none text-muted"><%= product.subCategoryId.subCategoryName %></a></li>
+                        <% } %>
+                    </ol>
+                </nav>
+
+                <h1 class="fw-bold text-dark mb-2 h2"><%= product.productName %></h1>
+                <p class="text-muted small mb-3">Product ID: <%= product._id.toString().slice(-8).toUpperCase() %></p>
+                
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <h2 class="fw-bold text-dark mb-0">₹<%= product.productPrice.toLocaleString('en-IN') %></h2>
+                    <% if(product.productStock > 0) { %>
+                        <% if(product.productStock <= 5) { %>
+                            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning px-3 py-2 rounded-pill">Only <%= product.productStock %> left!</span>
+                        <% } else { %>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2 rounded-pill">In Stock</span>
+                        <% } %>
+                    <% } else { %>
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 rounded-pill">Out of Stock</span>
+                    <% } %>
+                </div>
+
+                <!-- Size Chart -->
+                <% if(product.productSize && product.productSize.length > 0) { %>
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3 text-dark">Select Size <span class="text-danger">*</span></h6>
+                        <div class="d-flex gap-2" id="size-selector">
+                            <% product.productSize.forEach(size => { %>
+                                <div class="size-box border rounded d-flex align-items-center justify-content-center fw-medium text-dark bg-white" 
+                                     style="width: 45px; height: 45px; cursor: pointer;"
+                                     onclick="selectSize('<%= size %>', this)">
+                                    <%= size %>
+                                </div>
+                            <% }) %>
+                        </div>
+                        <input type="hidden" id="selected-size" name="size" value="">
+                        <div id="size-error" class="text-danger small mt-2 d-none">Please select a size before adding to cart.</div>
+                    </div>
+                <% } else { %>
+                    <input type="hidden" id="selected-size" name="size" value="N/A">
+                <% } %>
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-3 mb-5">
+                    <% if(product.productStock > 0) { %>
+                        <div class="row g-2">
+                            <div class="col-8">
+                                <button onclick="addToCart('<%= product._id %>')" class="btn btn-dark btn-lg w-100 py-3 fw-bold">
+                                    <i class="bi bi-bag-plus me-2"></i> Add to Cart
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-outline-dark btn-lg w-100 py-3">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <button class="btn btn-secondary btn-lg w-100 py-3 fw-bold disabled">Out of Stock</button>
+                    <% } %>
+                </div>
+
+                <script>
+                    function selectSize(size, element) {
+                        // Remove active class from all size boxes
+                        document.querySelectorAll('.size-box').forEach(box => {
+                            box.classList.remove('bg-dark', 'text-white');
+                            box.classList.add('bg-white', 'text-dark');
+                        });
+                        
+                        // Add active class to selected box
+                        element.classList.remove('bg-white', 'text-dark');
+                        element.classList.add('bg-dark', 'text-white');
+                        
+                        // Set value in hidden input
+                        document.getElementById('selected-size').value = size;
+                        document.getElementById('size-error').classList.add('d-none');
+                    }
+
+                    function addToCart(productId) {
+                        const selectedSize = document.getElementById('selected-size').value;
+                        if (!selectedSize) {
+                            document.getElementById('size-error').classList.remove('d-none');
+                            return;
+                        }
+                        
+                        // Redirect with size parameter
+                        window.location.href = `/add-to-cart/${productId}?size=${encodeURIComponent(selectedSize)}`;
+                    }
+                </script>
+
+                <!-- Description -->
+                <div class="border-top pt-4">
+                    <h5 class="fw-bold mb-3">Description</h5>
+                    <p class="text-secondary lh-lg mb-0" style="white-space: pre-line;"><%= product.productDescription %></p>
+                </div>
+
+                <!-- Specs -->
+                <div class="mt-4 pt-4 border-top">
+                    <h6 class="fw-bold mb-3">Product Details</h6>
+                    <div class="row row-cols-2 g-3">
+                        <div class="col">
+                            <small class="text-muted d-block">Category</small>
+                            <span class="fw-medium"><%= product.categoryId ? product.categoryId.categoryName : 'N/A' %></span>
+                        </div>
+                        <div class="col">
+                            <small class="text-muted d-block">Sub Category</small>
+                            <span class="fw-medium"><%= product.subCategoryId ? product.subCategoryId.subCategoryName : 'N/A' %></span>
+                        </div>
+                        <% if(product.extraCategoryId) { %>
+                            <div class="col">
+                                <small class="text-muted d-block">Collection</small>
+                                <span class="fw-medium"><%= product.extraCategoryId.extraCategoryName %></span>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .size-box:hover {
+        border-color: #1c1917 !important;
+        background-color: #f8f9fa !important;
+    }
+    .product-gallery {
+        position: sticky;
+        top: 100px;
+    }
+</style>
+
+<%- include('footer') %>

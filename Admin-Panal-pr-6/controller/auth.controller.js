@@ -9,14 +9,17 @@ const sendEmail = require("../middleware/sendEmail");
 
 exports.loginPage = async(req,res) => {
     try {
-        if(req.isAuthenticated())
-            return res.redirect("/dashboard");
+        if(req.isAuthenticated()){
+            if(req.user.role === 'admin') return res.redirect("/dashboard");
+            // If customer is logged in and tries to access admin login, logout first or redirect to web
+            return res.render("login");
+        }
         else{
             return res.render("login");
         }
     } catch (error) {
         console.log(error);
-        return res.redirect("/");
+        return res.redirect("/admin");
     }
 }
 
@@ -28,7 +31,7 @@ exports.logOutAdmin = async(req,res, next) => {
                 return next(err);
             }
             req.flash('success', 'Logout Successfully');
-            return res.redirect("/");
+            return res.redirect("/admin");
         });
     } catch (error) {
         console.log(error);
@@ -132,9 +135,9 @@ exports.sendOtp = async (req, res) => {
             return res.redirect("/forgot-password");
         }
         let otp = otpGenerator.generate(6, {upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false});
-        
+
         let message = {
-            from: 'sq.ravi777@gmail.com',
+            from: process.env.MAIL_FROM || process.env.SMTP_USER,
             to: `${req.body.email}`,
             subject: "Reset password OTP.",
             html: `<h2>Hello, ${admin.firstname}</h2>
@@ -182,7 +185,7 @@ exports.resetpassword = async (req, res) => {
         await Admin.findOneAndUpdate({email: email}, {password: hashpassword}, {new: true});
         res.clearCookie('email');
         req.flash('success', 'Password Reset Successfully');
-        return res.redirect("/");
+        return res.redirect("/admin");
         
     } catch (error) {
         console.log(error);
