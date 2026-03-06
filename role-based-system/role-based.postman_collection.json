@@ -1,0 +1,535 @@
+{
+  "info": {
+    "_postman_id": "eb398f18-b837-4eef-8408-06151c8cf574",
+    "name": "role-based",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52417730",
+    "_collection_link": "https://go.postman.co/collection/52417730-eb398f18-b837-4eef-8408-06151c8cf574?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "http://localhost:8888/api/register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "firstname",
+              "value": "ravi",
+              "type": "text",
+              "uuid": "973c8112-c4aa-4947-bbd8-74b2c9ad5d24"
+            },
+            {
+              "key": "lastname",
+              "value": "siddhapura",
+              "type": "text",
+              "uuid": "048b0ce7-02e1-4881-81d2-f4304055893f"
+            },
+            {
+              "key": "email",
+              "value": "ravisiddhapura777@gmail.com",
+              "type": "text",
+              "uuid": "0d79f1db-b028-4fe1-a253-7484fb6d5ce6"
+            },
+            {
+              "key": "password",
+              "value": "12345",
+              "type": "text",
+              "uuid": "03026ff3-590b-4f2c-b778-859d77b04aee"
+            },
+            {
+              "key": "mobileNo",
+              "value": "7069695001",
+              "type": "text",
+              "uuid": "3323fdcd-5f07-48b8-ab9b-d0934c237a0c"
+            },
+            {
+              "key": "profileImage",
+              "type": "file",
+              "uuid": "5c0d700d-bfb9-4d4b-a47c-74e212cff065",
+              "src": "/C:/Users/RAVI/Downloads/games.jpg"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8888/api/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "email",
+              "value": "ravisiddhapura777@gmail.com",
+              "type": "text",
+              "uuid": "5004a788-fd27-4a68-8106-0cf7f37898b6"
+            },
+            {
+              "key": "password",
+              "value": "12345",
+              "type": "text",
+              "uuid": "b3cf5333-9d84-41e5-a4b9-f257819a4b72"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8888/api/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/create-user",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhZjEwMDBkMGI4MTI3ZDI5MjJiOWEiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NzI4MTA2MDEsImV4cCI6MTc3Mjg5NzAwMX0.qk3ROSO5qOCD-ew1bUKkZBYgFxhDnHL2WZqs_ATI5Ic",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "firstname",
+              "value": "raju",
+              "type": "text",
+              "uuid": "463c2de5-80a4-4829-b07f-21a403e29e51"
+            },
+            {
+              "key": "lastname",
+              "value": "rastogi",
+              "type": "text",
+              "uuid": "1c6d5825-308b-440f-8dd0-61e330cb7064"
+            },
+            {
+              "key": "email",
+              "value": "ravisiddhapura786@gmail.com",
+              "type": "text",
+              "uuid": "e427a4cc-dedc-43e1-8c9d-d88bbe877d3d"
+            },
+            {
+              "key": "password",
+              "value": "12345",
+              "type": "text",
+              "uuid": "e8fe18fc-0355-47cb-ae5f-06b93696f8b7"
+            },
+            {
+              "key": "mobileNo",
+              "value": "8888999977",
+              "type": "text",
+              "uuid": "63fc4a2d-2857-4afa-80e0-ad35ad9ff05e"
+            },
+            {
+              "key": "profileImage",
+              "type": "file",
+              "uuid": "90e58cec-a4e4-4aa9-b7ee-21625576b326",
+              "src": "/C:/Users/RAVI/Downloads/sportshoe.jpg"
+            },
+            {
+              "key": "role",
+              "value": "Manager",
+              "type": "text",
+              "uuid": "1b37893f-7b39-4e4d-8931-b4460674b577"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8888/api/create-user?firstname=raju&lastname=rastogi&email=ravisiddhapura786@gmail.com&password=12345",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "create-user"
+          ],
+          "query": [
+            {
+              "key": "firstname",
+              "value": "raju",
+              "type": "text"
+            },
+            {
+              "key": "lastname",
+              "value": "rastogi",
+              "type": "text"
+            },
+            {
+              "key": "email",
+              "value": "ravisiddhapura786@gmail.com",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "12345",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "email",
+              "value": "ravisiddhapura786@gmail.com",
+              "type": "text",
+              "uuid": "8a56eda6-c6a1-428e-87ee-0025e9491096"
+            },
+            {
+              "key": "password",
+              "value": "12345",
+              "type": "text",
+              "uuid": "3e54d87d-e6e8-43d3-a6e3-0cd79b106cac"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8888/api/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/create-user",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhZjIyNTBkMGI4MTI3ZDI5MjJiOWYiLCJyb2xlIjoiTWFuYWdlciIsImlhdCI6MTc3MjgxMDg1NiwiZXhwIjoxNzcyODk3MjU2fQ.RUugtd7xkNGDF6Ensb9bTB_NLipRcTkp7-VKleU4uvA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "firstname",
+              "value": "veer",
+              "type": "text",
+              "uuid": "dd3192ea-6bc0-4ab8-9a5d-b343adc1be77"
+            },
+            {
+              "key": "lastname",
+              "value": "mangdavalo",
+              "type": "text",
+              "uuid": "f1d9f7c0-d67c-491f-b63d-2dfa54429d20"
+            },
+            {
+              "key": "email",
+              "value": "ravisiddhapura280@gmail.com",
+              "type": "text",
+              "uuid": "755d07bf-62c9-42fa-b84e-2dbc67dd9740"
+            },
+            {
+              "key": "mobileNo",
+              "value": "9999888811",
+              "type": "text",
+              "uuid": "946ed5fd-37dc-4b29-acaa-27bf932f3f95"
+            },
+            {
+              "key": "password",
+              "value": "12345",
+              "type": "text",
+              "uuid": "4b98c578-27cd-49cb-9ef7-610bd3d41f47"
+            },
+            {
+              "key": "profileImage",
+              "type": "file",
+              "uuid": "c84ca198-e6d7-4c6a-a582-f1555bf6047f",
+              "src": "/C:/Users/RAVI/Downloads/levi2.jpg"
+            },
+            {
+              "key": "role",
+              "value": "Employee",
+              "type": "text",
+              "uuid": "7f53c69b-b99f-48e0-8c60-6cca1dc78e53"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8888/api/create-user",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "create-user"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/admins",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhZjEwMDBkMGI4MTI3ZDI5MjJiOWEiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NzI4MTA2MDEsImV4cCI6MTc3Mjg5NzAwMX0.qk3ROSO5qOCD-ew1bUKkZBYgFxhDnHL2WZqs_ATI5Ic",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "firstname",
+              "value": "veer",
+              "type": "text",
+              "uuid": "dd3192ea-6bc0-4ab8-9a5d-b343adc1be77"
+            },
+            {
+              "key": "lastname",
+              "value": "mangdavalo",
+              "type": "text",
+              "uuid": "f1d9f7c0-d67c-491f-b63d-2dfa54429d20"
+            },
+            {
+              "key": "email",
+              "value": "ravisiddhapura280@gmail.com",
+              "type": "text",
+              "uuid": "755d07bf-62c9-42fa-b84e-2dbc67dd9740"
+            },
+            {
+              "key": "mobileNo",
+              "value": "9999888811",
+              "type": "text",
+              "uuid": "946ed5fd-37dc-4b29-acaa-27bf932f3f95"
+            },
+            {
+              "key": "password",
+              "value": "12345",
+              "type": "text",
+              "uuid": "4b98c578-27cd-49cb-9ef7-610bd3d41f47"
+            },
+            {
+              "key": "profileImage",
+              "type": "file",
+              "uuid": "c84ca198-e6d7-4c6a-a582-f1555bf6047f",
+              "src": "/C:/Users/RAVI/Downloads/levi2.jpg"
+            },
+            {
+              "key": "role",
+              "value": "Employee",
+              "type": "text",
+              "uuid": "7f53c69b-b99f-48e0-8c60-6cca1dc78e53"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8888/api/admins",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "admins"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/managers",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhZjEwMDBkMGI4MTI3ZDI5MjJiOWEiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NzI4MTA2MDEsImV4cCI6MTc3Mjg5NzAwMX0.qk3ROSO5qOCD-ew1bUKkZBYgFxhDnHL2WZqs_ATI5Ic",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8888/api/managers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "managers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/employees",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhZjEwMDBkMGI4MTI3ZDI5MjJiOWEiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NzI4MTA2MDEsImV4cCI6MTc3Mjg5NzAwMX0.qk3ROSO5qOCD-ew1bUKkZBYgFxhDnHL2WZqs_ATI5Ic",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8888/api/employees",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/update-user/69aaf2250d0b8127d2922b9f",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhZjEwMDBkMGI4MTI3ZDI5MjJiOWEiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NzI4MTA2MDEsImV4cCI6MTc3Mjg5NzAwMX0.qk3ROSO5qOCD-ew1bUKkZBYgFxhDnHL2WZqs_ATI5Ic",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "firstname",
+              "value": "rajesh",
+              "type": "text",
+              "uuid": "8af3dade-dc92-4621-af33-b65b015afe24"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8888/api/update-user/69aaf2250d0b8127d2922b9f",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "update-user",
+            "69aaf2250d0b8127d2922b9f"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8888/api/delete-user/69aaf2250d0b8127d2922b9f",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhZjEwMDBkMGI4MTI3ZDI5MjJiOWEiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NzI4MTA2MDEsImV4cCI6MTc3Mjg5NzAwMX0.qk3ROSO5qOCD-ew1bUKkZBYgFxhDnHL2WZqs_ATI5Ic",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8888/api/delete-user/69aaf2250d0b8127d2922b9f",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8888",
+          "path": [
+            "api",
+            "delete-user",
+            "69aaf2250d0b8127d2922b9f"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
